@@ -44,13 +44,6 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
       //   .finally(() => {
       //     setIsLoading(false);
       //   });
-      const fakeUser: UserType = {
-        id: 1,
-        isActive: true,
-        role: 2,
-        userName: "admin",
-      };
-      setUser(fakeUser);
       setIsLoading(false);
     } else {
       localStorage.setItem("token", "wawa");

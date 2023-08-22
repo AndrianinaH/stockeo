@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Container, CustomCard } from "./style";
 import CardContent from "@mui/material/CardContent";
-import logo from "../../assets/logo-black.svg";
+import logo from "../../assets/react.svg";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
