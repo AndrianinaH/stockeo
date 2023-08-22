@@ -1,5 +1,5 @@
 import { CustomAppBar, CustomToolbar } from "./styles";
-import logo from "../../assets/react.svg";
+import logo from "../../assets/logo.png";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
@@ -35,9 +35,9 @@ const NavBar = () => {
               <img
                 style={{ cursor: "pointer" }}
                 src={logo}
-                alt="JurisBot"
-                width={226}
-                height={42}
+                alt="Stockeo"
+                width={200}
+                height={60}
                 onClick={() => navigate(ROUTES.ROOT)}
               />
             </Box>

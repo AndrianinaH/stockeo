@@ -9,6 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import { SessionContextType, UserType } from "../utils/types";
+import { ROLES } from "../utils/roles";
 // import { getUser } from "../services/user.service";
 
 type SessionProviderProps = {
@@ -44,9 +45,15 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
       //   .finally(() => {
       //     setIsLoading(false);
       //   });
+      const fakeUser: UserType = {
+        id: 1,
+        isActive: true,
+        role: ROLES.ADMIN,
+        userName: "admin",
+      };
+      setUser(fakeUser);
       setIsLoading(false);
     } else {
-      localStorage.setItem("token", "wawa");
       setIsLoading(false);
     }
   }, []);

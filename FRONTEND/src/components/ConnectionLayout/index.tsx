@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Container, CustomCard } from "./style";
 import CardContent from "@mui/material/CardContent";
-import logo from "../../assets/react.svg";
+import logo from "../../assets/logo.png";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -22,7 +22,7 @@ const ConnectionLayout: FC<ConnectionLayoutProps> = ({
     <Container>
       <CustomCard sx={{ width: width || "400px" }}>
         <CardContent>
-          <img src={logo} alt="Jurismediation" width={260} />
+          <img src={logo} alt="Stockeo" width={260} />
           <Box mb={6} mt={2}>
             <Typography textAlign="center" variant="h4" fontWeight={700}>
               {title}
