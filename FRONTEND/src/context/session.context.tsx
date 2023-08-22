@@ -54,6 +54,7 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
       setUser(fakeUser);
       setIsLoading(false);
     } else {
+      localStorage.setItem("token", "wawa");
       setIsLoading(false);
     }
   }, []);
