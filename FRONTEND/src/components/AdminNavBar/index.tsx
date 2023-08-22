@@ -3,7 +3,7 @@ import {
   AdminCustomToolbar,
   AdminDrawerHeader,
 } from "./styles";
-import logo from "../../assets/react.svg";
+import logo from "../../assets/logo.png";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -53,9 +53,9 @@ const AdminNavBar = () => {
             <img
               style={{ cursor: "pointer" }}
               src={logo}
-              alt="JurisBot"
+              alt="Stockeo"
               width={200}
-              height={42}
+              height={80}
               onClick={() => navigate(ROUTES.ROOT)}
             />
           </Box>

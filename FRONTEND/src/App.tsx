@@ -5,6 +5,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import ConnectionRoute from "./components/ConnectionRoute";
 import AdminRoute from "./components/AdminRoute";
 import Login from "./pages/Connection/Login";
+import StockPage from "./pages/Stock";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <Route path={ROUTES.LOGIN} element={<Login />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path={ROUTES.ROOT} element={<h1>Accueil</h1>} />
+          <Route path={ROUTES.ROOT} element={<StockPage />} />
         </Route>
         <Route element={<AdminRoute />}>
           <Route path={ROUTES.DASHBOARD} element={<h1>Dashboard</h1>} />

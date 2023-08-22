@@ -29,6 +29,7 @@ const Login = () => {
       userName: "admin",
     };
     setUser(fakeUser);
+    localStorage.setItem("token", "wawa");
     navigate(ROUTES.ROOT);
     handleSetSnackbar({
       isOpen: true,
@@ -39,7 +40,7 @@ const Login = () => {
   };
 
   return (
-    <ConnectionLayout title="Stockeo" desc="Log in to manage the stock">
+    <ConnectionLayout title="Connexion" desc="Log in to manage the stock">
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
