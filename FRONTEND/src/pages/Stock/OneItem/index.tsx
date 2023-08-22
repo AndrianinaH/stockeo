@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { FC } from "react";
 import { theme } from "../../../utils/theme";
+import { formatNumber } from "../../../utils/utils";
 
 interface OneItemProps {
   title: string;
@@ -29,12 +30,34 @@ const OneItem: FC<OneItemProps> = ({ title, quantity, price }) => {
         <Typography
           component="p"
           color={theme.white}
-          sx={{ marginBottom: "5px" }}
+          sx={{ marginBottom: "15px" }}
         >
-          quantity: <strong style={{ fontSize: 20 }}>{quantity}</strong>
+          quantity:{" "}
+          <strong
+            style={{
+              fontSize: 20,
+              backgroundColor: theme.pastelGreen,
+              color: theme.blackPearl,
+              padding: "3px",
+              borderRadius: "5px",
+            }}
+          >
+            {quantity}
+          </strong>
         </Typography>
         <Typography component="p" color={theme.white}>
-          price: <strong style={{ fontSize: 20 }}>{price} Ar</strong>
+          price:{" "}
+          <strong
+            style={{
+              fontSize: 20,
+              backgroundColor: theme.white,
+              color: theme.blackPearl,
+              padding: "3px",
+              borderRadius: "5px",
+            }}
+          >
+            {formatNumber(price)} Ar
+          </strong>
         </Typography>
       </Box>
     </Box>
