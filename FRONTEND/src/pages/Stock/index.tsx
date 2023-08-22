@@ -8,7 +8,7 @@ import OneItem from "./OneItem";
 const StockPage = () => {
   return (
     <Box>
-      <Paper>
+      <Paper elevation={0}>
         <TextField
           id="search-phone"
           label="Search"

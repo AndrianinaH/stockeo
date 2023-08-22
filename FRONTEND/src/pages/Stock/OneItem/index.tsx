@@ -22,6 +22,7 @@ const OneItem: FC<OneItemProps> = ({ title, quantity, price }) => {
         paddingY: "10px",
         marginY: "20px",
       }}
+      boxShadow="0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"
     >
       <Typography component="h1" variant="h6" color={theme.pastelGreen}>
         {title}
