@@ -9,11 +9,22 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import MetricsIcon from "@mui/icons-material/BarChartOutlined";
+import StockIcon from "@mui/icons-material/StoreMallDirectoryOutlined";
+import SaleIcon from "@mui/icons-material/ShoppingBagOutlined";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const { user, setUser } = useSession();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+
+  const [selectedTab, setSelectedTab] = useState(0);
+  const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue);
+    navigate(newValue === 0 ? ROUTES.ROOT : ROUTES.ROOT);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -37,7 +48,7 @@ const NavBar = () => {
                 src={logo}
                 alt="Stockeo"
                 width={200}
-                height={60}
+                height={80}
                 onClick={() => navigate(ROUTES.ROOT)}
               />
             </Box>
@@ -78,6 +89,11 @@ const NavBar = () => {
           <MenuItem onClick={handleLogout}>Se déconnecter</MenuItem>
         </Menu>
       )}
+      <Tabs value={selectedTab} onChange={handleChangeTab} variant="fullWidth">
+        <Tab icon={<StockIcon />} label="Stock" />
+        <Tab icon={<SaleIcon />} label="Sales" />
+        <Tab icon={<MetricsIcon />} label="Metrics" />
+      </Tabs>
     </>
   );
 };
