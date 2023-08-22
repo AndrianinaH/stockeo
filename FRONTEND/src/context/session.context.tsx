@@ -45,7 +45,6 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
       //     setIsLoading(false);
       //   });
       const fakeUser: UserType = {
-        email: "admin@wawa.com",
         id: 1,
         isActive: true,
         role: 2,
