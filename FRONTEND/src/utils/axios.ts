@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create();
 instance.defaults.baseURL = `${import.meta.env.VITE_API_URL}`;
-instance.defaults.headers.common.Authorization = `Bearer ${localStorage.get(
+instance.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
   "token",
 )}`;
 

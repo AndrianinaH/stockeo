@@ -35,7 +35,7 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    if (localStorage.get("token")) {
+    if (localStorage.getItem("token")) {
       // getUser(localStorage.get("token") || "")
       //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
       //   .then((result: any) => {
@@ -44,6 +44,14 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
       //   .finally(() => {
       //     setIsLoading(false);
       //   });
+      const fakeUser: UserType = {
+        email: "admin@wawa.com",
+        id: 1,
+        isActive: true,
+        role: 1,
+        userName: "admin",
+      };
+      setUser(fakeUser);
       setIsLoading(false);
     } else {
       setIsLoading(false);
