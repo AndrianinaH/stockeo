@@ -23,7 +23,13 @@ const NavBar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
-    navigate(newValue === 0 ? ROUTES.ROOT : ROUTES.ROOT);
+    navigate(
+      newValue === 0
+        ? ROUTES.ROOT
+        : newValue === 1
+        ? ROUTES.SALES
+        : ROUTES.ROOT,
+    );
   };
 
   const handleClose = () => {

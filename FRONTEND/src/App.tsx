@@ -6,6 +6,7 @@ import ConnectionRoute from "./components/ConnectionRoute";
 import AdminRoute from "./components/AdminRoute";
 import Login from "./pages/Connection/Login";
 import StockPage from "./pages/Stock";
+import SalesPage from "./pages/Sales";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path={ROUTES.ROOT} element={<StockPage />} />
+          <Route path={ROUTES.SALES} element={<SalesPage />} />
         </Route>
         <Route element={<AdminRoute />}>
           <Route path={ROUTES.DASHBOARD} element={<h1>Dashboard</h1>} />
