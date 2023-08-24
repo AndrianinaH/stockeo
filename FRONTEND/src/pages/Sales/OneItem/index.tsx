@@ -10,8 +10,9 @@ interface OneItemProps {
   title: string;
   quantity: number;
   price: number;
+  onClick(): void;
 }
-const OneItem: FC<OneItemProps> = ({ title, quantity, price }) => {
+const OneItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
   return (
     <Box
       display="flex"
@@ -64,6 +65,7 @@ const OneItem: FC<OneItemProps> = ({ title, quantity, price }) => {
         </Typography>
       </Box>
       <Button
+        onClick={onClick}
         sx={{ fontWeight: "bold !important" }}
         variant="contained"
         size="large"
