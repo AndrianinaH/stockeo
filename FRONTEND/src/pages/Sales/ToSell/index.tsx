@@ -19,10 +19,6 @@ import DeliveryIcon from "@mui/icons-material/DeliveryDiningOutlined";
 const ToSell = () => {
   const [openSell, setOpenSell] = useState(false);
   const [sellQuantity, setSellQuantity] = useState(0);
-  console.log(
-    "🚀 ~ file: index.tsx:20 ~ SalesPage ~ sellQuantity:",
-    sellQuantity,
-  );
   const handleCloseSellModal = () => {
     setOpenSell(false);
     setSellQuantity(0);
@@ -84,7 +80,7 @@ const ToSell = () => {
                 marginRight: "5px",
               }}
             >
-              quantité to sell:
+              quantity to sell:
             </Typography>
             <IncrementNumber handleChangeNumber={setSellQuantity} />
           </Box>
@@ -96,6 +92,15 @@ const ToSell = () => {
               type="number"
               fullWidth
               value={760000}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Total price"
+              type="number"
+              fullWidth
+              value={760000 * sellQuantity}
+              disabled
             />
             <TextField
               margin="dense"
