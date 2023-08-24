@@ -15,6 +15,9 @@ const theme = responsiveFontSizes(
         dark: "#8ADE53",
         contrastText: "#1E2439",
       },
+      warning: {
+        main: "#ffb74d",
+      },
     },
     components: {
       MuiButton: {

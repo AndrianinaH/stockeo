@@ -12,7 +12,7 @@ interface OneItemProps {
   price: number;
   onClick(): void;
 }
-const OneItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
+const ToSellItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
   return (
     <Box
       display="flex"
@@ -37,7 +37,7 @@ const OneItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
           color={theme.blackPearl}
           sx={{ marginBottom: "15px" }}
         >
-          quantity:{" "}
+          quantity stock:{" "}
           <strong
             style={{
               fontSize: 20,
@@ -77,4 +77,4 @@ const OneItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
   );
 };
 
-export default OneItem;
+export default ToSellItem;
