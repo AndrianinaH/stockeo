@@ -3,7 +3,7 @@ import MoinsIcon from "@mui/icons-material/HorizontalRuleRounded";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 interface IncrementNumberProps {
   handleChangeNumber(value: number): void;

@@ -54,7 +54,6 @@ const NavBar = () => {
                 src={logo}
                 alt="Stockeo"
                 width={200}
-                height={80}
                 onClick={() => navigate(ROUTES.ROOT)}
               />
             </Box>
