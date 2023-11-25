@@ -1,1 +1,1 @@
-backend nodejs, nestjs
+backend techno deno, drizzleORM, turso(sqliteDB),
