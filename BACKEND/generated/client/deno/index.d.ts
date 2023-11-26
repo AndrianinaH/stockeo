@@ -19,6 +19,7 @@ export type DinosaurPayload<ExtArgs extends $Extensions.Args = $Extensions.Defau
     id: number
     name: string
     description: string
+    testMigration: string | null
   }, ExtArgs["result"]["dinosaur"]>
   composites: {}
 }
@@ -938,18 +939,21 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
+    testMigration: string | null
   }
 
   export type DinosaurMaxAggregateOutputType = {
     id: number | null
     name: string | null
     description: string | null
+    testMigration: string | null
   }
 
   export type DinosaurCountAggregateOutputType = {
     id: number
     name: number
     description: number
+    testMigration: number
     _all: number
   }
 
@@ -966,18 +970,21 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    testMigration?: true
   }
 
   export type DinosaurMaxAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    testMigration?: true
   }
 
   export type DinosaurCountAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    testMigration?: true
     _all?: true
   }
 
@@ -1072,6 +1079,7 @@ export namespace Prisma {
     id: number
     name: string
     description: string
+    testMigration: string | null
     _count: DinosaurCountAggregateOutputType | null
     _avg: DinosaurAvgAggregateOutputType | null
     _sum: DinosaurSumAggregateOutputType | null
@@ -1097,12 +1105,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    testMigration?: boolean
   }, ExtArgs["result"]["dinosaur"]>
 
   export type DinosaurSelectScalar = {
     id?: boolean
     name?: boolean
     description?: boolean
+    testMigration?: boolean
   }
 
 
@@ -1824,7 +1834,8 @@ export namespace Prisma {
   export const DinosaurScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    description: 'description'
+    description: 'description',
+    testMigration: 'testMigration'
   };
 
   export type DinosaurScalarFieldEnum = (typeof DinosaurScalarFieldEnum)[keyof typeof DinosaurScalarFieldEnum]
@@ -1836,6 +1847,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -1850,12 +1869,14 @@ export namespace Prisma {
     id?: IntFilter | number
     name?: StringFilter | string
     description?: StringFilter | string
+    testMigration?: StringNullableFilter | string | null
   }
 
   export type DinosaurOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    testMigration?: SortOrderInput | SortOrder
   }
 
   export type DinosaurWhereUniqueInput = {
@@ -1867,6 +1888,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    testMigration?: SortOrderInput | SortOrder
     _count?: DinosaurCountOrderByAggregateInput
     _avg?: DinosaurAvgOrderByAggregateInput
     _max?: DinosaurMaxOrderByAggregateInput
@@ -1881,45 +1903,53 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     name?: StringWithAggregatesFilter | string
     description?: StringWithAggregatesFilter | string
+    testMigration?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type DinosaurCreateInput = {
     name: string
     description: string
+    testMigration?: string | null
   }
 
   export type DinosaurUncheckedCreateInput = {
     id?: number
     name: string
     description: string
+    testMigration?: string | null
   }
 
   export type DinosaurUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    testMigration?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DinosaurUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    testMigration?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DinosaurCreateManyInput = {
     id?: number
     name: string
     description: string
+    testMigration?: string | null
   }
 
   export type DinosaurUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    testMigration?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DinosaurUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    testMigration?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter = {
@@ -1947,10 +1977,30 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type DinosaurCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    testMigration?: SortOrder
   }
 
   export type DinosaurAvgOrderByAggregateInput = {
@@ -1961,12 +2011,14 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    testMigration?: SortOrder
   }
 
   export type DinosaurMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    testMigration?: SortOrder
   }
 
   export type DinosaurSumOrderByAggregateInput = {
@@ -2006,8 +2058,29 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2041,6 +2114,20 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringFilter | string
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedIntWithAggregatesFilter = {
@@ -2085,6 +2172,34 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
 

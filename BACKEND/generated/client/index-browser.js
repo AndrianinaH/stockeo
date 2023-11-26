@@ -108,12 +108,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.DinosaurScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  testMigration: 'testMigration'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 
