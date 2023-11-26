@@ -2,12 +2,25 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:@planetscale/database@^1.4": "npm:@planetscale/database@1.11.0"
+      "npm:@planetscale/database@^1.4": "npm:@planetscale/database@1.11.0",
+      "npm:prisma": "npm:prisma@4.16.2",
+      "npm:prisma@4.16.2": "npm:prisma@4.16.2",
+      "npm:prisma@^4.5.0": "npm:prisma@4.16.2"
     },
     "npm": {
       "@planetscale/database@1.11.0": {
         "integrity": "sha512-aWbU+D/IRHoDE9975y+Q4c+EwwAWxCPwFId+N1AhQVFXzbeJMkj6KN2iQtoi03elcLMRdfT+V3i9Z4WRw+/oIA==",
         "dependencies": {}
+      },
+      "@prisma/engines@4.16.2": {
+        "integrity": "sha512-vx1nxVvN4QeT/cepQce68deh/Turxy5Mr+4L4zClFuK1GlxN3+ivxfuv+ej/gvidWn1cE1uAhW7ALLNlYbRUAw==",
+        "dependencies": {}
+      },
+      "prisma@4.16.2": {
+        "integrity": "sha512-SYCsBvDf0/7XSJyf2cHTLjLeTLVXYfqp7pG5eEVafFLeT0u/hLFz/9W196nDRGUOo1JfPatAEb+uEnTQImQC1g==",
+        "dependencies": {
+          "@prisma/engines": "@prisma/engines@4.16.2"
+        }
       }
     }
   },

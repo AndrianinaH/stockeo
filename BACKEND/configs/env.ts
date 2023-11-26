@@ -7,5 +7,6 @@ export const config = {
     host: Deno.env.get("DB_HOST"),
     username: Deno.env.get("DB_USERNAME"),
     password: Deno.env.get("DB_PASSWORD"),
+    url: Deno.env.get("DATABASE_URL"),
   },
 };

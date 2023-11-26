@@ -1,8 +1,8 @@
 import { config } from "./env.ts";
 import { connect } from "npm:@planetscale/database@^1.4";
 
-console.log("🚀 ~ file: db.ts:2 ~ config:", config);
-
+// original planetscale connector
+// if u dont want to use prisma
 const connexion = {
   database: config.db.name,
   host: config.db.host,
