@@ -3,7 +3,9 @@ await configEnv({ export: true });
 
 export const config = {
   db: {
-    url: Deno.env.get("TURSO_DB_URL"),
-    authToken: Deno.env.get("TURSO_DB_TOKEN"),
+    name: Deno.env.get("DB_NAME"),
+    host: Deno.env.get("DB_HOST"),
+    username: Deno.env.get("DB_USERNAME"),
+    password: Deno.env.get("DB_PASSWORD"),
   },
 };

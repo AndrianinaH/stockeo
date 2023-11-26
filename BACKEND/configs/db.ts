@@ -1,10 +1,13 @@
 import { config } from "./env.ts";
-import drizzle from "https://deno.land/x/drizzle@v0.23.85/postgres.ts";
-import { createClient } from "https://esm.sh/@libsql/client@0.4.0-pre.2/web";
+import { connect } from "npm:@planetscale/database@^1.4";
 
-const client = createClient({
-  url: config.db.url,
-  authToken: config.db.authToken,
-});
+console.log("🚀 ~ file: db.ts:2 ~ config:", config);
 
-export const db = drizzle(client);
+const connexion = {
+  database: config.db.name,
+  host: config.db.host,
+  username: config.db.username,
+  password: config.db.password,
+};
+
+export const db = connect(connexion);
