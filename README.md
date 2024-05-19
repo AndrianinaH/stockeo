@@ -1,6 +1,6 @@
 # stockeo
 
-Appli de gestion de stock (OPM)
+Appli de gestion de stock
 
 frontend techno (vite, react, netlify)
 
