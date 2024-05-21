@@ -10,6 +10,7 @@ const connection = new PostgresConnector({
 });
 
 let dbInstance: Database;
+// redeploy
 
 const createDatabaseInstance = (connection: PostgresConnector) => {
   if (!dbInstance) {
