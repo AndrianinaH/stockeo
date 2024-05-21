@@ -23,24 +23,17 @@ It will rebuild the server host in https://dash.deno.com/
 
 ## database
 
-The database is host in planetscale https://app.planetscale.com/ who is a serverless scalable mysql database
+The database is host in supabase https://supabase.com/ who is a serverless scalable postgresql database
 
-## prisma and db migration
+## denodb and db migration
 
-For now Prisma is the only stable ORM in Deno (waiting for drizzle to support mysql and turso)
+For now DenoDB is the only stable ORM in Deno (waiting for drizzle to be maintained)
 
 ## migration
 
-to update the database table :
+DenoDB https://deno.land/x/denodb@v1.4.0 is the ORM use to manipulate database
+to update the database tables :
 
-1.  update the `./prisma/schema.prisma` from the root folder add your change (new table, new column, ...)
-2.  edit the local `.env` to use `DATABASE_URL=mysql://`
-3.  in your local shell from the root folder, run
-
-        deno task prisma:db:push
-
-4.  and to update the ORM typescript schema use in local and production, run
-
-        deno task prisma:generate:client
-
-5.  edit the local `.env` to use `DATABASE_URL=prisma://`
+1- update the concerned models
+2- uncomment the sync() function for migration
+3- comment the sync() function to avoid drop data
