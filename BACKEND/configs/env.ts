@@ -10,4 +10,7 @@ export const config = {
     password: Deno.env.get("DB_PASSWORD"),
     url: Deno.env.get("DATABASE_URL"),
   },
+  jwt: {
+    secret: Deno.env.get("JWT_SECRET"),
+  },
 };

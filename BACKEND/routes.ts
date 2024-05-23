@@ -1,6 +1,7 @@
 import { Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { City } from "./models/city.model.ts";
 import { AuthController } from "./controllers/auth-controller.ts";
+import { AuthGuardMiddleware } from "./middlewares/auth-guard-middleware.ts";
 
 export const router = new Router()
   .get("/", async ({ response }) => {
@@ -22,7 +23,9 @@ export const router = new Router()
   })
 
   // AUTH and User
-  .post("/auth/login", ({ request, response }) => {
-    AuthController.login(request, response);
+  .post("/auth/login", AuthController.login)
+
+  // Secured routes using AuthGuard
+  .get("/user/:id", AuthGuardMiddleware, (context) => {
+    context.response.body = "Validate user ok";
   });
-//   .get("/user/:id", async (context) => {});
