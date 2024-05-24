@@ -11,5 +11,6 @@ export class Company extends Model {
     name: DataTypes.STRING,
     useQuantity: DataTypes.BOOLEAN,
     useImages: DataTypes.BOOLEAN,
+    useRef: DataTypes.BOOLEAN,
   };
 }
