@@ -1,31 +1,13 @@
-import { Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { City } from "./models/city.model.ts";
-import { AuthController } from "./controllers/auth-controller.ts";
-import { AuthGuardMiddleware } from "./middlewares/auth-guard-middleware.ts";
+import { Application } from "https://deno.land/x/oak@v12.6.1/mod.ts";
+import { defaultRouter } from "./routes/default.router.ts";
+import { authRouter } from "./routes/auth.router.ts";
 
-export const router = new Router()
-  .get("/", async ({ response }) => {
-    try {
-      await City.create([
-        {
-          name: "Antsiranana",
-        },
-        { name: "Diego" },
-      ]);
-      await City.where("name", "like", "%toa%").update({ name: "tamaga" });
-      const cities = await City.all();
-      console.log("🚀 ~ router ~ cities:", cities);
-    } catch (error) {
-      console.log("🚀 ~ router ~ error:", error);
-    }
+export const initRoutes = (app: Application) => {
+  // default router
+  app.use(defaultRouter.routes());
+  app.use(defaultRouter.allowedMethods());
 
-    response.body = "Stockeo API build with deno !!";
-  })
-
-  // AUTH and User
-  .post("/auth/login", AuthController.login)
-
-  // Secured routes using AuthGuard
-  .get("/user/:id", AuthGuardMiddleware, (context) => {
-    context.response.body = "Validate user ok";
-  });
+  // Auth router
+  app.use(authRouter.routes());
+  app.use(authRouter.allowedMethods());
+};
