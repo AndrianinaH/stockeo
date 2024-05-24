@@ -1,17 +1,11 @@
 import { Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { City } from "../models/city.model.ts";
+import { Company } from "../models/company.model.ts";
+import { User } from "../models/user.model.ts";
 
 export const defaultRouter = new Router().get("/", async ({ response }) => {
   try {
-    await City.create([
-      {
-        name: "Antsiranana",
-      },
-      { name: "Diego" },
-    ]);
-    await City.where("name", "like", "%toa%").update({ name: "tamaga" });
-    const cities = await City.all();
-    console.log("🚀 ~ router ~ cities:", cities);
+    console.log(await Company.all());
+    console.log(await User.all());
   } catch (error) {
     console.log("🚀 ~ router ~ error:", error);
   }

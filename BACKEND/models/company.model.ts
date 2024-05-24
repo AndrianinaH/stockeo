@@ -1,17 +1,15 @@
 import { DataTypes, Model } from "https://deno.land/x/denodb/mod.ts";
 import { db } from "../configs/db.ts";
+import { ModelFields } from "https://deno.land/x/denodb@v1.4.0/lib/model.ts";
 
-export class City extends Model {
-  static table = "cities";
+export class Company extends Model {
+  static table = "companies";
   static timestamps = true;
 
-  static fields = {
+  static fields: ModelFields = {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
+    useQuantity: DataTypes.BOOLEAN,
+    useImages: DataTypes.BOOLEAN,
   };
 }
-
-// call this to sync database
-db.link([City]);
-
-// await db.sync({ drop: true });
