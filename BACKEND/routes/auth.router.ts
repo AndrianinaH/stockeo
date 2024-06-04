@@ -7,6 +7,9 @@ export const authRouter = new Router()
   .post("/auth/login", AuthController.login)
 
   // Secured routes using AuthGuard
-  .get("/user/:id", AuthGuardMiddleware, (context) => {
-    context.response.body = "Validate user ok";
-  });
+  .get("/users/:id", AuthGuardMiddleware, AuthController.getUser)
+  .get(
+    "/users/:id/company",
+    AuthGuardMiddleware,
+    AuthController.getUserCompany,
+  );

@@ -4,7 +4,10 @@ import { jwtGenerate } from "../utils/jwt.ts";
 
 export const AuthService = {
   login: async (data: { email: string; password: string }) => {
-    const user = await User.where({ email: data.email }).first();
+    const user = await User.where({
+      email: data.email,
+      isActive: true,
+    }).first();
     if (!user) {
       throw new Error("User not found");
     }
@@ -15,5 +18,21 @@ export const AuthService = {
       data: "login success",
     });
     return jwtToken;
+  },
+
+  getUserById: async (userId: number) => {
+    const user = await User.where({ id: userId, isActive: true }).first();
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
+  },
+
+  getUserCompanyByUserId: async (userId: number) => {
+    const company = await User.where({ id: userId, isActive: true }).company();
+    if (!company) {
+      throw new Error("User company not found");
+    }
+    return company;
   },
 };

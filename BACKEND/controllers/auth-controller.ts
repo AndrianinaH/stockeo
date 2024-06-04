@@ -1,4 +1,4 @@
-import { Context } from "https://deno.land/x/oak@v12.6.1/mod.ts";
+import { Context, RouterContext } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { AuthService } from "../services/auth.service.ts";
 import { logger } from "../utils/logger.ts";
 
@@ -13,6 +13,39 @@ export const AuthController = {
       };
     } catch (error) {
       logger.error("login failed", { error: error.message });
+      response.status = 404;
+      response.body = error.message;
+    }
+  },
+
+  getUser: async ({ params, response }: RouterContext<"/users/:id">) => {
+    try {
+      const id = params.id;
+      // deno-lint-ignore no-unused-vars
+      const { password, ...user } = await AuthService.getUserById(+id);
+      logger.info("get user success", { userId: id });
+      response.body = {
+        user,
+      };
+    } catch (error) {
+      logger.error("get user failed", { error: error.message });
+      response.status = 404;
+      response.body = error.message;
+    }
+  },
+  getUserCompany: async ({
+    params,
+    response,
+  }: RouterContext<"/users/:id/company">) => {
+    try {
+      const id = params.id;
+      const company = await AuthService.getUserCompanyByUserId(+id);
+      logger.info("get user company success", { userId: id });
+      response.body = {
+        company,
+      };
+    } catch (error) {
+      logger.error("get user company failed", { error: error.message });
       response.status = 404;
       response.body = error.message;
     }
