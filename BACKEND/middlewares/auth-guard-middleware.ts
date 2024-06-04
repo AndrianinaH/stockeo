@@ -1,6 +1,6 @@
 import { Next } from "https://deno.land/x/oak@v12.6.1/middleware.ts";
 import { Context } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { jwtVerify } from "../configs/jwt.ts";
+import { jwtVerify } from "../utils/jwt.ts";
 
 export const AuthGuardMiddleware = async (ctx: Context, next: Next) => {
   const authorizationHeader = ctx.request.headers.get("Authorization");

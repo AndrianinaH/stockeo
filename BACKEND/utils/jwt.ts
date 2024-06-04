@@ -4,7 +4,7 @@ import {
   Payload,
   getNumericDate,
 } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
-import { config } from "./env.ts";
+import { config } from "../configs/env.ts";
 
 const CryptoKey = (() => {
   let key: CryptoKey;

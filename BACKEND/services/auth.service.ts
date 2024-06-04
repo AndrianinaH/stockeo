@@ -1,4 +1,4 @@
-import { jwtGenerate } from "../configs/jwt.ts";
+import { jwtGenerate } from "../utils/jwt.ts";
 
 export const AuthService = {
   login: async (data: { email: string; password: string }) => {

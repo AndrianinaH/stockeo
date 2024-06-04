@@ -6,8 +6,8 @@ Stockeo backend is a restfull API run and serve in Deno
 
 - deno (javascript runtime),
 - oak(REST API),
-- planetscale (db),
-- prisma (orm)
+- supabase (db),
+- denodb (orm)
 
 ## run in localhost
 
