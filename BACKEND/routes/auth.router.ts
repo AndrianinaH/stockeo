@@ -1,5 +1,5 @@
 import { Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { AuthController } from "../controllers/auth-controller.ts";
+import { AuthController } from "../controllers/auth.controller.ts";
 import { AuthGuardMiddleware } from "../middlewares/auth-guard-middleware.ts";
 
 export const authRouter = new Router()
