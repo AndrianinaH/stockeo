@@ -1,5 +1,6 @@
 import { config as configEnv } from "https://deno.land/x/dotenv/mod.ts";
 await configEnv({ export: true });
+// await configEnv({ export: true, path: ".env.dev" });
 
 export const config = {
   db: {
