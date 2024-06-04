@@ -6,7 +6,7 @@ export class City extends Model {
   static timestamps = true;
 
   static fields = {
-    id: { primaryKey: true, autoIncrement: true },
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
   };
 }
