@@ -12,7 +12,7 @@ export const AuthService = {
       throw new Error("User not found");
     }
     // confirm password throw error if not correct
-    await confirmPassword(data.password, user.password as string);
+    confirmPassword(data.password, user.password as string);
 
     const jwtToken = await jwtGenerate(
       JSON.stringify({

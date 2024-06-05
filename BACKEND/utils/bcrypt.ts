@@ -1,15 +1,15 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 
-export const hashPassword = async (password: string) => {
-  const salt = await bcrypt.genSalt(8);
-  return await bcrypt.hash(password, salt);
+// deno deploy cant use worker
+// https://github.com/denoland/deploy_feedback/issues/171
+// we need to use sync method instead of asynchronous
+export const hashPassword = (password: string) => {
+  const salt = bcrypt.genSaltSync(8);
+  return bcrypt.hashSync(password, salt);
 };
 
-export const confirmPassword = async (
-  password: string,
-  userPassword: string,
-) => {
-  const confirmPassword = await bcrypt.compare(password, userPassword);
+export const confirmPassword = (password: string, userPassword: string) => {
+  const confirmPassword = bcrypt.compareSync(password, userPassword);
   if (!confirmPassword) {
     throw new Error("Incorrect password");
   }
