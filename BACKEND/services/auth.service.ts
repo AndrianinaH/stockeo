@@ -4,7 +4,7 @@ import { jwtGenerate } from "../utils/jwt.ts";
 
 export const AuthService = {
   login: async (data: { email: string; password: string }) => {
-    const { password, ...user } = await User.where({
+    const user = await User.where({
       email: data.email,
       isActive: true,
     }).first();
@@ -12,14 +12,16 @@ export const AuthService = {
       throw new Error("User not found");
     }
     // confirm password throw error if not correct
-    confirmPassword(data.password, password as string);
+    confirmPassword(data.password, user.password as string);
 
     const accessToken = await jwtGenerate(
       JSON.stringify({
         userId: user.id,
       }),
     );
-    return { ...user, accessToken };
+    // deno-lint-ignore no-unused-vars
+    const { password, ...rest } = user;
+    return { user: rest, accessToken };
   },
 
   getUserById: async (userId: number) => {
