@@ -8,10 +8,10 @@ export const AuthController = {
   login: async ({ request, response }: Context) => {
     try {
       const body = await request.body().value;
-      const accessToken = await AuthService.login(body);
+      const userWithToken = await AuthService.login(body);
       logger.info("login success", { user: body.email });
       response.body = {
-        accessToken,
+        ...userWithToken,
       };
     } catch (error) {
       logger.error("login failed", { error });
