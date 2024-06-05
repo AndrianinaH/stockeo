@@ -4,6 +4,8 @@ import { defaultRouter } from "./routes/default.router.ts";
 import { authRouter } from "./routes/auth.router.ts";
 
 export const initRoutes = (app: Application) => {
+  app.use(oakCors({ origin: "*" }));
+
   // default router
   app.use(defaultRouter.routes());
   app.use(defaultRouter.allowedMethods());
@@ -11,6 +13,4 @@ export const initRoutes = (app: Application) => {
   // Auth router
   app.use(authRouter.routes());
   app.use(authRouter.allowedMethods());
-
-  app.use(oakCors({ origin: "*" }));
 };
