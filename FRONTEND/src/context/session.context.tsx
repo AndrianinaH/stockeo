@@ -9,8 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import { SessionContextType, UserType } from "../utils/types";
-import { ROLES } from "../utils/roles";
-// import { getUser } from "../services/user.service";
+import { AuthService } from "../services/auth.service";
 
 type SessionProviderProps = {
   children: React.ReactNode;
@@ -36,23 +35,16 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // getUser(localStorage.get("token") || "")
-      //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      //   .then((result: any) => {
-      //     setUser(result?.data?.data);
-      //   })
-      //   .finally(() => {
-      //     setIsLoading(false);
-      //   });
-      const fakeUser: UserType = {
-        id: 1,
-        isActive: true,
-        role: ROLES.ADMIN,
-        userName: "admin",
-      };
-      setUser(fakeUser);
-      setIsLoading(false);
+    const token = localStorage.getItem("token");
+    if (token) {
+      AuthService.getUser(token)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((result: any) => {
+          setUser(result?.data?.user);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(false);
     }
