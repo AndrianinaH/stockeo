@@ -7,8 +7,6 @@ import { ROLES } from "../../utils/roles";
 
 const PrivateRoute = () => {
   const { user, isLoading } = useSession();
-  console.log("🚀 ~ file: index.tsx:10 ~ PrivateRoute ~ user:", user);
-
   return isLoading ? (
     <CircularProgress />
   ) : user &&

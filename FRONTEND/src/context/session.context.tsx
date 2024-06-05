@@ -38,8 +38,7 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       AuthService.getUser(token)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((result: any) => {
+        .then((result) => {
           setUser(result?.data?.user);
         })
         .finally(() => {

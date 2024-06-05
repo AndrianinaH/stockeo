@@ -24,7 +24,7 @@ const Login = () => {
     setIsLoading(true);
     AuthService.login({ email, password })
       .then((result) => {
-        setUser(result?.data);
+        setUser(result?.data?.user);
         setToken(result?.data?.accessToken);
         localStorage.setItem("token", result?.data?.accessToken);
         navigate(ROUTES.ROOT);
