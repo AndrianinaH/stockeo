@@ -9,7 +9,6 @@ export const authRouter = new Router()
   // Secured routes using AuthGuard
   .get("/users/getMe", AuthGuardMiddleware, AuthController.getMe)
   .get("/users/:id", AuthGuardMiddleware, AuthController.getUser)
-  // .get("/users/getMyCompany", AuthGuardMiddleware, AuthController.getMyCompany)
   .get(
     "/users/:id/company",
     AuthGuardMiddleware,

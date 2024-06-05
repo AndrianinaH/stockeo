@@ -15,7 +15,7 @@ export type SessionContextType = {
 
 export type UserType = {
   id: number;
-  userName: string;
-  role: number;
+  name: string;
+  role: string;
   isActive: boolean;
 };

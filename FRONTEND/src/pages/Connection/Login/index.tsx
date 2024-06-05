@@ -6,86 +6,93 @@ import { ROUTES } from "../../../constants/routes";
 import Button from "@mui/material/Button";
 import { useSession } from "../../../context/session.context";
 import ConnectionLayout from "../../../components/ConnectionLayout";
-import { ROLES } from "../../../utils/roles";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSnackbar } from "../../../context/snackbar.context";
-import { UserType } from "../../../utils/types";
+import { AuthService } from "../../../services/auth.service";
+import { setToken } from "../../../utils/utils";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSetSnackbar } = useSnackbar();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
     setIsLoading(true);
-    const fakeUser: UserType = {
-      id: 1,
-      isActive: true,
-      role: ROLES.ADMIN,
-      userName: "admin",
-    };
-    setUser(fakeUser);
-    localStorage.setItem("token", "wawa");
-    navigate(ROUTES.ROOT);
-    handleSetSnackbar({
-      isOpen: true,
-      message: "Welcome back!",
-      variant: "success",
-    });
-    setIsLoading(false);
+    AuthService.login({ email, password })
+      .then((result) => {
+        setUser(result?.data);
+        setToken(result?.data?.accessToken);
+        localStorage.setItem("token", result?.data?.accessToken);
+        navigate(ROUTES.ROOT);
+        setIsLoading(false);
+        handleSetSnackbar({
+          isOpen: true,
+          message: "Welcome back!",
+          variant: "success",
+        });
+        return;
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+        handleSetSnackbar({
+          isOpen: true,
+          message: error?.response?.data || "An error encountered",
+          variant: "error",
+        });
+      });
   };
 
   return (
     <ConnectionLayout title="Connexion" desc="Log in to manage the stock">
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="subtitle2">Enter your username</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="username"
-              placeholder="Username *"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle2">Enter your password</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="password"
-              placeholder="Mot de passe *"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              type={!isLoading ? "submit" : "button"}
-              sx={{ width: "100%", fontWeight: "600 !important" }}
-            >
-              {isLoading ? (
-                <CircularProgress sx={{ color: "white" }} />
-              ) : (
-                <>Connexion</>
-              )}
-            </Button>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2">Enter your email</Typography>
         </Grid>
-      </form>
+        <Grid item xs={12}>
+          <TextField
+            name="email"
+            placeholder="Email *"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2">Enter your password</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            name="password"
+            placeholder="Mot de passe *"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            type={!isLoading ? "submit" : "button"}
+            sx={{ width: "100%", fontWeight: "600 !important" }}
+            onClick={handleSubmit}
+          >
+            {isLoading ? (
+              <CircularProgress sx={{ color: "white" }} />
+            ) : (
+              <>Connexion</>
+            )}
+          </Button>
+        </Grid>
+      </Grid>
     </ConnectionLayout>
   );
 };

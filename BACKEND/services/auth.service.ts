@@ -14,12 +14,14 @@ export const AuthService = {
     // confirm password throw error if not correct
     confirmPassword(data.password, user.password as string);
 
-    const jwtToken = await jwtGenerate(
+    const accessToken = await jwtGenerate(
       JSON.stringify({
         userId: user.id,
       }),
     );
-    return jwtToken;
+    // deno-lint-ignore no-unused-vars
+    const { password, ...rest } = user;
+    return { user: rest, accessToken };
   },
 
   getUserById: async (userId: number) => {

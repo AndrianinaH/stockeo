@@ -11,13 +11,17 @@ const PrivateRoute = () => {
 
   return isLoading ? (
     <CircularProgress />
-  ) : user && (user.role === ROLES.USER || user.role === ROLES.ADMIN) ? (
+  ) : user &&
+    (user.role === ROLES.STOREKEEPER ||
+      user.role === ROLES.SELLER ||
+      user.role === ROLES.ADMIN) ? (
     <Layout>
       <Outlet />
     </Layout>
   ) : (
     <Navigate to={ROUTES.LOGIN} />
   );
+  return null;
 };
 
 export default PrivateRoute;
