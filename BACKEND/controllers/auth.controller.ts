@@ -14,7 +14,7 @@ export const AuthController = {
         accessToken,
       };
     } catch (error) {
-      logger.error("login failed", { error: error.message });
+      logger.error("login failed", { error });
       response.status = 404;
       response.body = error.message;
     }
@@ -34,7 +34,7 @@ export const AuthController = {
         user,
       };
     } catch (error) {
-      logger.error("getMe failed", { error: error.message });
+      logger.error("getMe failed", { error });
       response.status = 404;
       response.body = error.message;
     }
@@ -50,7 +50,7 @@ export const AuthController = {
         user,
       };
     } catch (error) {
-      logger.error("get user failed", { error: error.message });
+      logger.error("get user failed", { error });
       response.status = 404;
       response.body = error.message;
     }
@@ -68,7 +68,7 @@ export const AuthController = {
         company,
       };
     } catch (error) {
-      logger.error("get user company failed", { error: error.message });
+      logger.error("get user company failed", { error });
       response.status = 404;
       response.body = error.message;
     }
