@@ -61,3 +61,4 @@ build/config\.gypi
 pnpm-lock.yaml
 BACKEND/.env
 FRONTEND/.env
+BACKEND/.env.dev
