@@ -14,9 +14,11 @@ export const AuthService = {
     // confirm password throw error if not correct
     await confirmPassword(data.password, user.password as string);
 
-    const jwtToken = await jwtGenerate({
-      data: "login success",
-    });
+    const jwtToken = await jwtGenerate(
+      JSON.stringify({
+        userId: user.id,
+      }),
+    );
     return jwtToken;
   },
 

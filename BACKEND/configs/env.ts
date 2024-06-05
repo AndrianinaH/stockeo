@@ -14,4 +14,7 @@ export const config = {
   jwt: {
     secret: Deno.env.get("JWT_SECRET"),
   },
+  jwe: {
+    secret: Deno.env.get("JWE_SECRET"),
+  },
 };

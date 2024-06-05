@@ -1,6 +1,8 @@
 import { Context, RouterContext } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { AuthService } from "../services/auth.service.ts";
 import { logger } from "../utils/logger.ts";
+import { jwtDecode } from "../utils/jwt.ts";
+import { getBearerToken } from "../utils/bearer.util.ts";
 
 export const AuthController = {
   login: async ({ request, response }: Context) => {
@@ -13,6 +15,26 @@ export const AuthController = {
       };
     } catch (error) {
       logger.error("login failed", { error: error.message });
+      response.status = 404;
+      response.body = error.message;
+    }
+  },
+
+  getMe: async ({ request, response }: Context) => {
+    try {
+      // get payload by decrypting acessToken
+      const token = getBearerToken(request);
+      const jwtPayload = await jwtDecode(token || "");
+      const { userId } = JSON.parse(jwtPayload);
+
+      // deno-lint-ignore no-unused-vars
+      const { password, ...user } = await AuthService.getUserById(userId);
+      logger.info("getMe success", { userId });
+      response.body = {
+        user,
+      };
+    } catch (error) {
+      logger.error("getMe failed", { error: error.message });
       response.status = 404;
       response.body = error.message;
     }
@@ -33,6 +55,7 @@ export const AuthController = {
       response.body = error.message;
     }
   },
+
   getUserCompany: async ({
     params,
     response,
