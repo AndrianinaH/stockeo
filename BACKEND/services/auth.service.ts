@@ -14,12 +14,12 @@ export const AuthService = {
     // confirm password throw error if not correct
     confirmPassword(data.password, password as string);
 
-    const jwtToken = await jwtGenerate(
+    const accessToken = await jwtGenerate(
       JSON.stringify({
         userId: user.id,
       }),
     );
-    return { ...user, jwtToken };
+    return { ...user, accessToken };
   },
 
   getUserById: async (userId: number) => {
