@@ -10,10 +10,12 @@ import { Product } from "../../utils/types";
 import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import { theme } from "../../utils/theme";
 import Typography from "@mui/material/Typography";
+import { useApiError } from "../../utils/api";
 
 const StockPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const { handleApiError } = useApiError();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,8 +23,7 @@ const StockPage = () => {
         const productList = await ProductService.getProducts();
         setProducts(productList);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
-        // Handle error appropriately (e.g., display an error message)
+        handleApiError(error);
       }
     };
 

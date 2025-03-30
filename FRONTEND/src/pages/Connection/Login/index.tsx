@@ -8,10 +8,11 @@ import { useSession } from "../../../context/session.context";
 import ConnectionLayout from "../../../components/ConnectionLayout";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSnackbar } from "../../../context/snackbar.context";
 import { AuthService } from "../../../services/auth.service";
 import { setToken } from "../../../utils/utils";
 import { ROLES } from "../../../utils/roles";
+import { useApiError } from "../../../utils/api"; // Import the hook
+import { useSnackbar } from "../../../context/snackbar.context";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Login = () => {
   const { handleSetSnackbar } = useSnackbar();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { handleApiError } = useApiError();
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -44,13 +46,8 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         setIsLoading(false);
-        handleSetSnackbar({
-          isOpen: true,
-          message: error?.response?.data || "An error encountered",
-          variant: "error",
-        });
+        handleApiError(error);
       });
   };
 
