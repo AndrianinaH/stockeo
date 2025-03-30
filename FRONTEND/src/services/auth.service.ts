@@ -1,7 +1,7 @@
 import { ENDPOINTS } from "../constants/endpoints";
 import axios from "../utils/axios";
 export const AuthService = {
-  login: async (parameters: { email: string; password: string }) => {
+  login: async (parameters: { username: string; password: string }) => {
     return axios.post(`${ENDPOINTS.LOGIN}`, parameters);
   },
   getUser: async (token: string) => {

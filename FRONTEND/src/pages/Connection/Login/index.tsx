@@ -22,7 +22,7 @@ const Login = () => {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    AuthService.login({ email, password })
+    AuthService.login({ username: email, password })
       .then((result) => {
         setUser(result?.data?.user);
         setToken(result?.data?.accessToken);
