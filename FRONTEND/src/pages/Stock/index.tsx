@@ -4,8 +4,27 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 import OneItem from "./OneItem";
+import { useState, useEffect } from "react";
+import { ProductService } from "../../services/product.service";
+import { Product } from "../../utils/types";
 
 const StockPage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productList = await ProductService.getProducts();
+        setProducts(productList);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        // Handle error appropriately (e.g., display an error message)
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <Box>
       <Paper elevation={0}>
@@ -24,15 +43,14 @@ const StockPage = () => {
         />
       </Paper>
       <Box sx={{ marginTop: "25px" }}>
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
-        <OneItem title="Samsung A14 4/128GB" price={760000} quantity={10} />
+        {products.map((product) => (
+          <OneItem
+            key={product.id}
+            title={product.name}
+            price={product.prix}
+            quantity={10} // Replace with actual quantity if available
+          />
+        ))}
       </Box>
     </Box>
   );

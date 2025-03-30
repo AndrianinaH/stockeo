@@ -19,3 +19,10 @@ export type UserType = {
   email: string;
   role: ROLES;
 };
+
+export interface Product {
+  id: number;
+  name: string;
+  prix: number;
+  category: string;
+}

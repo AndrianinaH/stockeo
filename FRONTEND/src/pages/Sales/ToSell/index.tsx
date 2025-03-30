@@ -4,7 +4,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 import MyModal from "../../../components/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -15,10 +15,18 @@ import IncrementNumber from "../../../components/IncrementNumber";
 import ToSellItem from "../ToSellItem";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
 import DeliveryIcon from "@mui/icons-material/DeliveryDiningOutlined";
+import { ProductService } from "../../../services/product.service";
+import { Product } from "../../../utils/types";
 
 const ToSell = () => {
   const [openSell, setOpenSell] = useState(false);
   const [sellQuantity, setSellQuantity] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  // Ajout de l'état pour les produits sélectionnés
+  const [selectedProducts, setSelectedProducts] = useState<
+    { title: string; price: number; quantity: number; sellQuantity: number }[]
+  >([]);
+
   const handleCloseSellModal = () => {
     setOpenSell(false);
     setSellQuantity(0);
@@ -27,6 +35,21 @@ const ToSell = () => {
     setOpenSell(true);
     setSellQuantity(1);
   };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productList = await ProductService.getProducts();
+        setProducts(productList);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        // Handle error appropriately (e.g., display an error message)
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <Box marginY={5}>
       <Paper elevation={0}>
@@ -45,12 +68,15 @@ const ToSell = () => {
         />
       </Paper>
       <Box sx={{ marginTop: "25px" }}>
-        <ToSellItem
-          title="Samsung A14 4/128GB"
-          price={760000}
-          quantity={10}
-          onClick={handleOpenSellModal}
-        />
+        {products.map((product) => (
+          <ToSellItem
+            key={product.id}
+            title={product.name}
+            price={product.prix}
+            quantity={10} // Replace with actual quantity if available
+            onClick={handleOpenSellModal}
+          />
+        ))}
       </Box>
       {/* sell modal */}
       <MyModal
