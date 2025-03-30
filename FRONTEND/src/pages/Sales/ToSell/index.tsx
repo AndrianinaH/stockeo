@@ -17,11 +17,13 @@ import SaveIcon from "@mui/icons-material/CheckOutlined";
 import DeliveryIcon from "@mui/icons-material/DeliveryDiningOutlined";
 import { ProductService } from "../../../services/product.service";
 import { Product } from "../../../utils/types";
+import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 
 const ToSell = () => {
   const [openSell, setOpenSell] = useState(false);
   const [sellQuantity, setSellQuantity] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   // Ajout de l'état pour les produits sélectionnés
   const [selectedProducts, setSelectedProducts] = useState<
     { title: string; price: number; quantity: number; sellQuantity: number }[]
@@ -50,6 +52,19 @@ const ToSell = () => {
     fetchProducts();
   }, []);
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const searchTerm = searchQuery.toLowerCase();
+    return (
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.category.toLowerCase().includes(searchTerm) ||
+      String(product.prix).includes(searchTerm)
+    );
+  });
+
   return (
     <Box marginY={5}>
       <Paper elevation={0}>
@@ -65,18 +80,42 @@ const ToSell = () => {
           }}
           variant="outlined"
           fullWidth
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
       </Paper>
-      <Box sx={{ marginTop: "25px" }}>
-        {products.map((product) => (
-          <ToSellItem
-            key={product.id}
-            title={product.name}
-            price={product.prix}
-            quantity={10} // Replace with actual quantity if available
-            onClick={handleOpenSellModal}
-          />
-        ))}
+      <Box
+        sx={{
+          marginTop: "25px",
+        }}
+      >
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ToSellItem
+              key={product.id}
+              title={product.name}
+              price={product.prix}
+              quantity={10} // Replace with actual quantity if available
+              onClick={handleOpenSellModal}
+            />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            <SentimentDissatisfied
+              sx={{ fontSize: 60, color: theme.disabledColor }}
+            />
+            <Typography variant="subtitle1" color={theme.disabledColor}>
+              Oups no products found
+            </Typography>
+          </Box>
+        )}
       </Box>
       {/* sell modal */}
       <MyModal

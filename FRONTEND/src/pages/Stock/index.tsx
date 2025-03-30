@@ -7,9 +7,13 @@ import OneItem from "./OneItem";
 import { useState, useEffect } from "react";
 import { ProductService } from "../../services/product.service";
 import { Product } from "../../utils/types";
+import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
+import { theme } from "../../utils/theme";
+import Typography from "@mui/material/Typography";
 
 const StockPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,6 +28,19 @@ const StockPage = () => {
 
     fetchProducts();
   }, []);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const searchTerm = searchQuery.toLowerCase();
+    return (
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.category.toLowerCase().includes(searchTerm) ||
+      String(product.prix).includes(searchTerm)
+    );
+  });
 
   return (
     <Box>
@@ -40,17 +57,41 @@ const StockPage = () => {
           }}
           variant="outlined"
           fullWidth
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
       </Paper>
-      <Box sx={{ marginTop: "25px" }}>
-        {products.map((product) => (
-          <OneItem
-            key={product.id}
-            title={product.name}
-            price={product.prix}
-            quantity={10} // Replace with actual quantity if available
-          />
-        ))}
+      <Box
+        sx={{
+          marginTop: "25px",
+        }}
+      >
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <OneItem
+              key={product.id}
+              title={product.name}
+              price={product.prix}
+              quantity={10} // Replace with actual quantity if available
+            />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            <SentimentDissatisfied
+              sx={{ fontSize: 60, color: theme.disabledColor }}
+            />
+            <Typography variant="subtitle1" color={theme.disabledColor}>
+              Oups no products found
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Box>
   );
