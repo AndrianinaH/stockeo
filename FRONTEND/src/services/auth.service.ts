@@ -5,7 +5,7 @@ export const AuthService = {
     return axios.post(`${ENDPOINTS.LOGIN}`, parameters);
   },
   getUser: async (token: string) => {
-    return axios.get(`${ENDPOINTS.USERS}/getMe`, {
+    return axios.get(`${ENDPOINTS.ME}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { SessionContextType, UserType } from "../utils/types";
 import { AuthService } from "../services/auth.service";
+import { ROLES } from "../utils/roles";
 
 type SessionProviderProps = {
   children: React.ReactNode;
@@ -39,7 +40,13 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
     if (token) {
       AuthService.getUser(token)
         .then((result) => {
-          setUser(result?.data?.user);
+          const user = result?.data?.user;
+          if (user) {
+            setUser({
+              email: user.email,
+              role: user.role[0] || ROLES.USER,
+            });
+          }
         })
         .finally(() => {
           setIsLoading(false);

@@ -1,3 +1,5 @@
+import { ROLES } from "./roles";
+
 export type SnackbarContextType = {
   handleSetSnackbar: (value: {
     isOpen: boolean;
@@ -14,8 +16,6 @@ export type SessionContextType = {
 };
 
 export type UserType = {
-  id: number;
-  name: string;
-  role: string;
-  isActive: boolean;
+  email: string;
+  role: ROLES;
 };
