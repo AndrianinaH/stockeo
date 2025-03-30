@@ -9,10 +9,7 @@ const PrivateRoute = () => {
   const { user, isLoading } = useSession();
   return isLoading ? (
     <CircularProgress />
-  ) : user &&
-    (user.role === ROLES.STOREKEEPER ||
-      user.role === ROLES.SELLER ||
-      user.role === ROLES.ADMIN) ? (
+  ) : user && (user.role === ROLES.USER || user.role === ROLES.ADMIN) ? (
     <Layout>
       <Outlet />
     </Layout>

@@ -11,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useSnackbar } from "../../../context/snackbar.context";
 import { AuthService } from "../../../services/auth.service";
 import { setToken } from "../../../utils/utils";
+import { ROLES } from "../../../utils/roles";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,17 +25,23 @@ const Login = () => {
     setIsLoading(true);
     AuthService.login({ username: email, password })
       .then((result) => {
-        setUser(result?.data?.user);
-        setToken(result?.data?.accessToken);
-        localStorage.setItem("token", result?.data?.accessToken);
-        navigate(ROUTES.ROOT);
-        setIsLoading(false);
-        handleSetSnackbar({
-          isOpen: true,
-          message: "Welcome back!",
-          variant: "success",
-        });
-        return;
+        const data = result?.data;
+        if (data.user) {
+          setUser({
+            email: data.user,
+            role: ROLES.USER,
+          });
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          navigate(ROUTES.ROOT);
+          setIsLoading(false);
+          handleSetSnackbar({
+            isOpen: true,
+            message: "Welcome back!",
+            variant: "success",
+          });
+          return;
+        }
       })
       .catch((error) => {
         console.log(error);
