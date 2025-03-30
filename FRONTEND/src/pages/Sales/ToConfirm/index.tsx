@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import { theme } from "../../../utils/theme";
 import { formatNumber } from "../../../utils/utils";
 import ToConfirmItem from "../ToConfirmItem";
-import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "../../../utils/atoms";
@@ -20,15 +19,7 @@ import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied"; /
 
 const ToConfirm = () => {
   const cart = useAtomValue(cartAtom);
-  const [openCancelModal, setOpenCancelModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-
-  const handleCloseCancelModal = () => {
-    setOpenCancelModal(false);
-  };
-  const handleOpenCancelModal = () => {
-    setOpenCancelModal(true);
-  };
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
@@ -61,7 +52,6 @@ const ToConfirm = () => {
               key={item.product.id}
               item={item}
               onConfirm={handleOpenConfirmModal}
-              onCancel={handleOpenCancelModal}
             />
           ))
         ) : (
@@ -168,97 +158,6 @@ const ToConfirm = () => {
             variant="text"
             color="inherit"
             onClick={handleCloseConfirmModal}
-          >
-            Back
-          </Button>
-        </DialogActions>
-      </MyModal>
-      {/* cancel sell modal */}
-      <MyModal
-        open={openCancelModal}
-        onClose={handleCloseCancelModal}
-        fullscreen
-        title="Are you sure you want to cancel this sale ?"
-      >
-        <DialogContent sx={{ textAlign: "center" }}>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            color={theme.blackPearl}
-          >
-            <strong>Samsung Galaxy A14 4/128GB</strong>
-          </Typography>
-          <br />
-          <Typography component="p" variant="body1" color={theme.blackPearl}>
-            prix d'origine : <strong>{formatNumber(760000)} Ar</strong>
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            marginY={2}
-          >
-            <Typography
-              component="span"
-              variant="body1"
-              color={theme.blackPearl}
-              sx={{
-                marginRight: "5px",
-              }}
-            >
-              quantity to confirm: <strong>4</strong>
-            </Typography>
-          </Box>
-          <Box marginX={5}>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Selling price"
-              type="number"
-              fullWidth
-              value={760000}
-              disabled
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Total price"
-              type="number"
-              fullWidth
-              value={760000 * 4}
-              disabled
-            />
-            <TextField
-              margin="dense"
-              label="Comment"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            padding: "20px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            size="large"
-            variant="contained"
-            color="error"
-            onClick={handleCloseCancelModal}
-            startIcon={<CancelIcon />}
-          >
-            Cancel the sell
-          </Button>
-          <Button
-            size="large"
-            variant="text"
-            color="inherit"
-            onClick={handleCloseCancelModal}
           >
             Back
           </Button>

@@ -7,14 +7,25 @@ import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import ConfirmIcon from "@mui/icons-material/CheckOutlined";
 import { SaleItem } from "../../../utils/atoms"; // Import SaleItem
+import { useAtom } from "jotai"; // Import useAtom
+import { cartAtom } from "../../../utils/atoms"; // Import cartAtom
 
 interface OneItemProps {
   item: SaleItem; // Use SaleItem instead of title, quantity, price
   onConfirm(): void;
-  onCancel(): void;
 }
 
-const ToConfirmItem: FC<OneItemProps> = ({ item, onCancel, onConfirm }) => {
+const ToConfirmItem: FC<OneItemProps> = ({ item, onConfirm }) => {
+  const [cart, setCart] = useAtom(cartAtom); // Get cart and setCart
+
+  const handleCancel = () => {
+    // Remove the item from the cart
+    const updatedCart = cart.filter(
+      (cartItem) => cartItem.product.id !== item.product.id,
+    );
+    setCart(updatedCart);
+  };
+
   return (
     <Box
       display="flex"
@@ -78,7 +89,7 @@ const ToConfirmItem: FC<OneItemProps> = ({ item, onCancel, onConfirm }) => {
           CONFIRM
         </Button>
         <Button
-          onClick={onCancel}
+          onClick={handleCancel} // Use handleCancel
           sx={{ fontWeight: "bold !important" }}
           variant="contained"
           size="large"
