@@ -6,21 +6,15 @@ import { formatNumber } from "../../../utils/utils";
 import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import ConfirmIcon from "@mui/icons-material/CheckOutlined";
+import { SaleItem } from "../../../utils/atoms"; // Import SaleItem
 
 interface OneItemProps {
-  title: string;
-  quantity: number;
-  price: number;
+  item: SaleItem; // Use SaleItem instead of title, quantity, price
   onConfirm(): void;
   onCancel(): void;
 }
-const ToConfirmItem: FC<OneItemProps> = ({
-  title,
-  quantity,
-  price,
-  onCancel,
-  onConfirm,
-}) => {
+
+const ToConfirmItem: FC<OneItemProps> = ({ item, onCancel, onConfirm }) => {
   return (
     <Box
       display="flex"
@@ -37,7 +31,7 @@ const ToConfirmItem: FC<OneItemProps> = ({
       boxShadow="0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"
     >
       <Typography component="h1" variant="h6" color={theme.blackPearl}>
-        {title}
+        {item.product.name} {/* Use item.product.name */}
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography
@@ -55,7 +49,7 @@ const ToConfirmItem: FC<OneItemProps> = ({
               borderRadius: "5px",
             }}
           >
-            {quantity}
+            {item.quantity} {/* Use item.quantity */}
           </strong>
         </Typography>
         <Typography component="p" color={theme.blackPearl}>
@@ -68,7 +62,7 @@ const ToConfirmItem: FC<OneItemProps> = ({
               borderRadius: "5px",
             }}
           >
-            {formatNumber(price)} Ar
+            {formatNumber(item.product.prix)} Ar {/* Use item.product.prix */}
           </strong>
         </Typography>
       </Box>

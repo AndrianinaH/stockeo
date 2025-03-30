@@ -14,9 +14,13 @@ import { formatNumber } from "../../../utils/utils";
 import ToConfirmItem from "../ToConfirmItem";
 import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
+import { useAtomValue } from "jotai";
+import { cartAtom } from "../../../utils/atoms";
 
 const ToConfirm = () => {
+  const cart = useAtomValue(cartAtom);
   const [openCancelModal, setOpenCancelModal] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const handleCloseCancelModal = () => {
     setOpenCancelModal(false);
@@ -24,8 +28,6 @@ const ToConfirm = () => {
   const handleOpenCancelModal = () => {
     setOpenCancelModal(true);
   };
-
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
@@ -52,13 +54,14 @@ const ToConfirm = () => {
         />
       </Paper>
       <Box sx={{ marginTop: "25px" }}>
-        <ToConfirmItem
-          title="Samsung A14 4/128GB"
-          price={760000}
-          quantity={10}
-          onConfirm={handleOpenConfirmModal}
-          onCancel={handleOpenCancelModal}
-        />
+        {cart.map((item) => (
+          <ToConfirmItem
+            key={item.product.id}
+            item={item}
+            onConfirm={handleOpenConfirmModal}
+            onCancel={handleOpenCancelModal}
+          />
+        ))}
       </Box>
       {/* confirm sell modal */}
       <MyModal
