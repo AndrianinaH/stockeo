@@ -16,6 +16,7 @@ import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "../../../utils/atoms";
+import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied"; // Import SentimentDissatisfied
 
 const ToConfirm = () => {
   const cart = useAtomValue(cartAtom);
@@ -54,14 +55,32 @@ const ToConfirm = () => {
         />
       </Paper>
       <Box sx={{ marginTop: "25px" }}>
-        {cart.map((item) => (
-          <ToConfirmItem
-            key={item.product.id}
-            item={item}
-            onConfirm={handleOpenConfirmModal}
-            onCancel={handleOpenCancelModal}
-          />
-        ))}
+        {cart.length > 0 ? (
+          cart.map((item) => (
+            <ToConfirmItem
+              key={item.product.id}
+              item={item}
+              onConfirm={handleOpenConfirmModal}
+              onCancel={handleOpenCancelModal}
+            />
+          ))
+        ) : (
+          <Box // Display "Panier vide" message
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            <SentimentDissatisfied
+              sx={{ fontSize: 60, color: theme.disabledColor }}
+            />
+            <Typography variant="subtitle1" color={theme.disabledColor}>
+              Empty cart, please buy something
+            </Typography>
+          </Box>
+        )}
       </Box>
       {/* confirm sell modal */}
       <MyModal
