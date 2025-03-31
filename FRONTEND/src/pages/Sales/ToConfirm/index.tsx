@@ -18,11 +18,12 @@ import { cartAtom, SaleItem } from "../../../utils/atoms";
 import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import ConfirmIcon from "@mui/icons-material/CheckOutlined";
 import { Fab } from "@mui/material";
+import IncrementNumber from "../../../components/IncrementNumber";
 
 const ToConfirm = () => {
   const [cart, setCart] = useAtom(cartAtom);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [comment, setComment] = useState(""); // State for the comment
+  const [comment, setComment] = useState("");
   const [sellingPrices, setSellingPrices] = useState<Record<number, number>>(
     {},
   ); // State for selling prices
@@ -49,6 +50,14 @@ const ToConfirm = () => {
   const getTotalPrice = (item: SaleItem): number => {
     const sellingPrice = sellingPrices[item.product.id] || item.product.prix;
     return sellingPrice * item.quantity;
+  };
+
+  // Function to update quantity in cart
+  const handleQuantityChange = (productId: number, newQuantity: number) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId ? { ...item, quantity: newQuantity } : item,
+    );
+    setCart(updatedCart);
   };
 
   return (
@@ -137,13 +146,27 @@ const ToConfirm = () => {
                   )
                 }
               />
-              <Typography
-                component="p"
-                variant="body1"
-                color={theme.blackPearl}
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
               >
-                Quantity: <strong>{item.quantity}</strong>
-              </Typography>
+                <Typography
+                  component="p"
+                  variant="body1"
+                  color={theme.blackPearl}
+                >
+                  Quantity: <strong>{item.quantity}</strong>
+                </Typography>
+                {/* Add IncrementNumber component */}
+                <IncrementNumber
+                  initialValue={item.quantity}
+                  handleChangeNumber={(newQuantity) =>
+                    handleQuantityChange(item.product.id, newQuantity)
+                  }
+                />
+              </Box>
               <Typography
                 component="p"
                 variant="body1"

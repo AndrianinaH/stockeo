@@ -7,9 +7,13 @@ import { FC, useState } from "react";
 
 interface IncrementNumberProps {
   handleChangeNumber(value: number): void;
+  initialValue?: number;
 }
-const IncrementNumber: FC<IncrementNumberProps> = ({ handleChangeNumber }) => {
-  const [number, setNumber] = useState<number>(0);
+const IncrementNumber: FC<IncrementNumberProps> = ({
+  handleChangeNumber,
+  initialValue,
+}) => {
+  const [number, setNumber] = useState<number>(initialValue || 0);
   return (
     <Box display="flex" alignItems="center" alignContent="center">
       <IconButton
