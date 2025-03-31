@@ -15,7 +15,9 @@ import ToConfirmItem from "../ToConfirmItem";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "../../../utils/atoms";
-import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied"; // Import SentimentDissatisfied
+import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
+import ConfirmIcon from "@mui/icons-material/CheckOutlined";
+import { Fab } from "@mui/material";
 
 const ToConfirm = () => {
   const cart = useAtomValue(cartAtom);
@@ -48,11 +50,15 @@ const ToConfirm = () => {
       <Box sx={{ marginTop: "25px" }}>
         {cart.length > 0 ? (
           cart.map((item) => (
-            <ToConfirmItem
-              key={item.product.id}
-              item={item}
-              onConfirm={handleOpenConfirmModal}
-            />
+            <>
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+              <ToConfirmItem key={item.product.id} item={item} />
+            </>
           ))
         ) : (
           <Box // Display "Panier vide" message
@@ -163,6 +169,15 @@ const ToConfirm = () => {
           </Button>
         </DialogActions>
       </MyModal>
+      <Fab
+        variant="extended"
+        color="primary"
+        onClick={handleOpenConfirmModal}
+        style={{ position: "fixed", bottom: 16, right: 16 }}
+      >
+        <ConfirmIcon sx={{ mr: 1 }} />
+        Confirm the sale
+      </Fab>
     </Box>
   );
 };
