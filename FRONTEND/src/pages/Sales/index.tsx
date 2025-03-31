@@ -6,6 +6,7 @@ import ToConfirm from "./ToConfirm";
 import { theme } from "../../utils/theme";
 import { useAtom } from "jotai";
 import { cartAtom } from "../../utils/atoms";
+import { Box } from "@mui/material";
 
 const SalesPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -21,9 +22,9 @@ const SalesPage = () => {
         <Tab label="To Sell" />
         <Tab
           label={
-            <p>
-              To Confirm{" "}
-              {cart.length > 0 && ( // Conditionally render the badge
+            <Box>
+              <span>To Confirm </span>
+              {cart.length > 0 && (
                 <strong
                   style={{
                     fontSize: 14,
@@ -33,10 +34,10 @@ const SalesPage = () => {
                     borderRadius: "8px",
                   }}
                 >
-                  {cart.length} {/* Display the number of items in the cart */}
+                  {cart.length}
                 </strong>
               )}
-            </p>
+            </Box>
           }
         />
       </Tabs>
