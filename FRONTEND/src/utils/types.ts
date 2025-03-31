@@ -1,4 +1,4 @@
-import { ROLES } from "./roles";
+import { ROLES, SELL_STATUS } from "./enum";
 
 export type SnackbarContextType = {
   handleSetSnackbar: (value: {
@@ -20,9 +20,19 @@ export type UserType = {
   role: ROLES;
 };
 
-export interface Product {
+export type ProductType = {
   id: number;
   name: string;
   prix: number;
   category: string;
-}
+};
+
+export type SellType = {
+  produits: {
+    id: number;
+    quantite: number;
+    prixVente: number;
+  }[];
+  commentaires?: string;
+  status: SELL_STATUS;
+};

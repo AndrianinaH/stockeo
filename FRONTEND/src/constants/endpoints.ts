@@ -4,4 +4,7 @@ export const ENDPOINTS = {
   ME: "/api/getMe",
   // produit
   PRODUCT: "/api/produits",
+  // vente
+  SELLS: "/api/ventes",
+  SELL: "/api/vente",
 };

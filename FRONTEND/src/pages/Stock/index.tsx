@@ -6,14 +6,14 @@ import SearchIcon from "@mui/icons-material/SearchOutlined";
 import OneItem from "./OneItem";
 import { useState, useEffect } from "react";
 import { ProductService } from "../../services/product.service";
-import { Product } from "../../utils/types";
+import { ProductType } from "../../utils/types";
 import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import { theme } from "../../utils/theme";
 import Typography from "@mui/material/Typography";
 import { useApiError } from "../../utils/api";
 
 const StockPage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { handleApiError } = useApiError();
 

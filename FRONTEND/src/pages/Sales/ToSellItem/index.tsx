@@ -7,10 +7,10 @@ import Button from "@mui/material/Button";
 import SellIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { useAtom } from "jotai";
 import { cartAtom, SaleItem } from "../../../utils/atoms";
-import { Product } from "../../../utils/types";
+import { ProductType } from "../../../utils/types";
 
 interface OneItemProps {
-  product: Product; // Use product instead of title, price, quantity
+  product: ProductType; // Use product instead of title, price, quantity
 }
 
 const ToSellItem: FC<OneItemProps> = ({ product }) => {

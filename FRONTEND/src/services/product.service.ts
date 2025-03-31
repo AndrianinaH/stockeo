@@ -1,10 +1,10 @@
 import { ENDPOINTS } from "../constants/endpoints";
 import axios from "../utils/axios";
-import { Product } from "../utils/types";
+import { ProductType } from "../utils/types";
 
-const getProducts = async (): Promise<Product[]> => {
+const getProducts = async (): Promise<ProductType[]> => {
   try {
-    const response = await axios.get<{ produits: Product[] }>(
+    const response = await axios.get<{ produits: ProductType[] }>(
       `${ENDPOINTS.PRODUCT}`,
     );
     return response.data.produits;

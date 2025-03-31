@@ -3,7 +3,7 @@ import { ROUTES } from "../../constants/routes";
 import { useSession } from "../../context/session.context";
 import Layout from "../Layout";
 import { Navigate, Outlet } from "react-router-dom";
-import { ROLES } from "../../utils/roles";
+import { ROLES } from "../../utils/enum";
 
 const PrivateRoute = () => {
   const { user, isLoading } = useSession();

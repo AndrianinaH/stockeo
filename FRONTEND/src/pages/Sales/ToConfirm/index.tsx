@@ -19,11 +19,21 @@ import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import ConfirmIcon from "@mui/icons-material/CheckOutlined";
 import { Fab } from "@mui/material";
 import IncrementNumber from "../../../components/IncrementNumber";
+import { SELL_STATUS } from "../../../utils/enum";
+import { SellType } from "../../../utils/types";
+import { SellService } from "../../../services/sell.service";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/routes";
+import { useApiError } from "../../../utils/api";
 
 const ToConfirm = () => {
   const [cart, setCart] = useAtom(cartAtom);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [comment, setComment] = useState("");
+
+  const { handleApiError } = useApiError();
+
+  const navigate = useNavigate();
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
@@ -32,19 +42,26 @@ const ToConfirm = () => {
     setOpenConfirmModal(true);
   };
 
-  const handleConfirmSale = () => {
-    const vente = {
-      produit: cart.map((item) => ({
+  const handleConfirmSale = async () => {
+    const vente: SellType = {
+      produits: cart.map((item) => ({
         id: item.product.id,
         quantite: item.quantity,
         prixVente: item.sellingPrice || item.product.prix,
       })),
-      commentaire: comment,
+      commentaires: comment,
+      status: SELL_STATUS.VALIDATED,
     };
-    console.log("Vente object:", vente); // Log the vente object
-    setOpenConfirmModal(false);
-    setCart([]);
-    setComment("");
+    try {
+      await SellService.createSell(vente);
+      navigate(ROUTES.SALES);
+      setCart([]);
+      setComment("");
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setOpenConfirmModal(false);
+    }
   };
 
   const getTotalPrice = (item: SaleItem): number => {

@@ -8,12 +8,12 @@ import Typography from "@mui/material/Typography";
 import { theme } from "../../../utils/theme";
 import ToSellItem from "../ToSellItem";
 import { ProductService } from "../../../services/product.service";
-import { Product } from "../../../utils/types";
+import { ProductType } from "../../../utils/types";
 import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import { useApiError } from "../../../utils/api";
 
 const ToSell = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { handleApiError } = useApiError();
 

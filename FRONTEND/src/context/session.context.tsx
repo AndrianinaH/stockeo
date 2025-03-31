@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { SessionContextType, UserType } from "../utils/types";
 import { AuthService } from "../services/auth.service";
-import { ROLES } from "../utils/roles";
+import { ROLES } from "../utils/enum";
 
 type SessionProviderProps = {
   children: React.ReactNode;
