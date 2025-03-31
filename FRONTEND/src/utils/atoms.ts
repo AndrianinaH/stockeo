@@ -5,6 +5,7 @@ import { Product } from "./types";
 export type SaleItem = {
   product: Product;
   quantity: number;
+  sellingPrice?: number;
 };
 
 // Initialise l'atom avec une liste vide de SaleItem

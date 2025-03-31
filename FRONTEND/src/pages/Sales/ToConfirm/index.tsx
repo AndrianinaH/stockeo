@@ -24,9 +24,6 @@ const ToConfirm = () => {
   const [cart, setCart] = useAtom(cartAtom);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [comment, setComment] = useState("");
-  const [sellingPrices, setSellingPrices] = useState<Record<number, number>>(
-    {},
-  ); // State for selling prices
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
@@ -35,27 +32,32 @@ const ToConfirm = () => {
     setOpenConfirmModal(true);
   };
 
-  const handleSellingPriceChange = (productId: number, value: number) => {
-    setSellingPrices({ ...sellingPrices, [productId]: value });
-  };
-
   const handleConfirmSale = () => {
     // TODO: Implement the logic to confirm the sale and save the comment and selling prices
+    console.log("Confirming sale with cart:", cart);
     console.log("Confirming sale with comment:", comment);
-    console.log("Selling prices:", sellingPrices);
     setOpenConfirmModal(false);
-    setCart([]); // Clear the cart after confirming the sale
+    setCart([]);
+    setComment("");
   };
 
   const getTotalPrice = (item: SaleItem): number => {
-    const sellingPrice = sellingPrices[item.product.id] || item.product.prix;
+    const sellingPrice = item.sellingPrice || item.product.prix;
     return sellingPrice * item.quantity;
   };
 
-  // Function to update quantity in cart
   const handleQuantityChange = (productId: number, newQuantity: number) => {
     const updatedCart = cart.map((item) =>
       item.product.id === productId ? { ...item, quantity: newQuantity } : item,
+    );
+    setCart(updatedCart);
+  };
+
+  const handleSellingPriceChange = (productId: number, newPrice: number) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId
+        ? { ...item, sellingPrice: newPrice }
+        : item,
     );
     setCart(updatedCart);
   };
@@ -83,7 +85,7 @@ const ToConfirm = () => {
             <ToConfirmItem key={item.product.id} item={item} />
           ))
         ) : (
-          <Box // Display "Panier vide" message
+          <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -138,7 +140,7 @@ const ToConfirm = () => {
                 label="Selling Price"
                 type="number"
                 fullWidth
-                value={sellingPrices[item.product.id] || item.product.prix}
+                value={item.sellingPrice || item.product.prix}
                 onChange={(e) =>
                   handleSellingPriceChange(
                     item.product.id,
