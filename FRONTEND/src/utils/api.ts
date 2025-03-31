@@ -1,10 +1,8 @@
 import { useSnackbar } from "../context/snackbar.context";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 
 export const useApiError = () => {
   const { handleSetSnackbar } = useSnackbar();
-  const navigate = useNavigate();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleApiError = (error: any, customMessage?: string) => {
@@ -12,7 +10,8 @@ export const useApiError = () => {
 
     if (error?.response?.status === 401) {
       // Redirect to login page
-      navigate(ROUTES.LOGIN);
+      window.location.href = ROUTES.LOGIN;
+      window.location.reload();
       localStorage.removeItem("token");
       handleSetSnackbar({
         isOpen: true,
