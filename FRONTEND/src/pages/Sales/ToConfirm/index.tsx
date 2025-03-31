@@ -33,9 +33,15 @@ const ToConfirm = () => {
   };
 
   const handleConfirmSale = () => {
-    // TODO: Implement the logic to confirm the sale and save the comment and selling prices
-    console.log("Confirming sale with cart:", cart);
-    console.log("Confirming sale with comment:", comment);
+    const vente = {
+      produit: cart.map((item) => ({
+        id: item.product.id,
+        quantite: item.quantity,
+        prixVente: item.sellingPrice || item.product.prix,
+      })),
+      commentaire: comment,
+    };
+    console.log("Vente object:", vente); // Log the vente object
     setOpenConfirmModal(false);
     setCart([]);
     setComment("");
