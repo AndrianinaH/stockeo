@@ -13,21 +13,42 @@ import { theme } from "../../../utils/theme";
 import { formatNumber } from "../../../utils/utils";
 import ToConfirmItem from "../ToConfirmItem";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
-import { useAtomValue } from "jotai";
-import { cartAtom } from "../../../utils/atoms";
+import { useAtom } from "jotai";
+import { cartAtom, SaleItem } from "../../../utils/atoms";
 import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
 import ConfirmIcon from "@mui/icons-material/CheckOutlined";
 import { Fab } from "@mui/material";
 
 const ToConfirm = () => {
-  const cart = useAtomValue(cartAtom);
+  const [cart, setCart] = useAtom(cartAtom);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [comment, setComment] = useState(""); // State for the comment
+  const [sellingPrices, setSellingPrices] = useState<Record<number, number>>(
+    {},
+  ); // State for selling prices
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
   };
   const handleOpenConfirmModal = () => {
     setOpenConfirmModal(true);
+  };
+
+  const handleSellingPriceChange = (productId: number, value: number) => {
+    setSellingPrices({ ...sellingPrices, [productId]: value });
+  };
+
+  const handleConfirmSale = () => {
+    // TODO: Implement the logic to confirm the sale and save the comment and selling prices
+    console.log("Confirming sale with comment:", comment);
+    console.log("Selling prices:", sellingPrices);
+    setOpenConfirmModal(false);
+    setCart([]); // Clear the cart after confirming the sale
+  };
+
+  const getTotalPrice = (item: SaleItem): number => {
+    const sellingPrice = sellingPrices[item.product.id] || item.product.prix;
+    return sellingPrice * item.quantity;
   };
 
   return (
@@ -50,15 +71,7 @@ const ToConfirm = () => {
       <Box sx={{ marginTop: "25px" }}>
         {cart.length > 0 ? (
           cart.map((item) => (
-            <>
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-              <ToConfirmItem key={item.product.id} item={item} />
-            </>
+            <ToConfirmItem key={item.product.id} item={item} />
           ))
         ) : (
           <Box // Display "Panier vide" message
@@ -86,62 +99,71 @@ const ToConfirm = () => {
         title="Confirm this sale ?"
       >
         <DialogContent sx={{ textAlign: "center" }}>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            color={theme.blackPearl}
-          >
-            <strong>Samsung Galaxy A14 4/128GB</strong>
-          </Typography>
-          <br />
-          <Typography component="p" variant="body1" color={theme.blackPearl}>
-            prix d'origine : <strong>{formatNumber(760000)} Ar</strong>
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            marginY={2}
-          >
-            <Typography
-              component="span"
-              variant="body1"
-              color={theme.blackPearl}
+          {cart.map((item) => (
+            <Box
+              key={item.product.id}
               sx={{
-                marginRight: "5px",
+                marginBottom: 2,
+                padding: 2,
+                border: `1px solid ${theme.mainBorderColor}`,
+                borderRadius: "4px",
               }}
             >
-              quantity to confirm: <strong>4</strong>
-            </Typography>
-          </Box>
-          <Box marginX={5}>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Selling price"
-              type="number"
-              fullWidth
-              value={760000}
-              disabled
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Total price"
-              type="number"
-              fullWidth
-              value={760000 * 4}
-              disabled
-            />
-            <TextField
-              margin="dense"
-              label="Comment"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-            />
-          </Box>
+              <Typography
+                component="p"
+                variant="subtitle1"
+                color={theme.blackPearl}
+              >
+                <strong>{item.product.name}</strong>
+              </Typography>
+              <Typography
+                component="p"
+                variant="body1"
+                color={theme.blackPearl}
+              >
+                Original Price:{" "}
+                <strong>{formatNumber(item.product.prix)} Ar</strong>
+              </Typography>
+              <TextField
+                margin="dense"
+                label="Selling Price"
+                type="number"
+                fullWidth
+                value={sellingPrices[item.product.id] || item.product.prix}
+                onChange={(e) =>
+                  handleSellingPriceChange(
+                    item.product.id,
+                    Number(e.target.value),
+                  )
+                }
+              />
+              <Typography
+                component="p"
+                variant="body1"
+                color={theme.blackPearl}
+              >
+                Quantity: <strong>{item.quantity}</strong>
+              </Typography>
+              <Typography
+                component="p"
+                variant="body1"
+                color={theme.blackPearl}
+              >
+                Total Price:{" "}
+                <strong>{formatNumber(getTotalPrice(item))} Ar</strong>
+              </Typography>
+            </Box>
+          ))}
+          <TextField
+            margin="dense"
+            label="Comment"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
         </DialogContent>
         <DialogActions
           sx={{
@@ -154,7 +176,7 @@ const ToConfirm = () => {
             size="large"
             variant="contained"
             color="success"
-            onClick={handleCloseConfirmModal}
+            onClick={handleConfirmSale}
             startIcon={<SaveIcon />}
           >
             Confirm
@@ -176,7 +198,7 @@ const ToConfirm = () => {
         style={{ position: "fixed", bottom: 16, right: 16 }}
       >
         <ConfirmIcon sx={{ mr: 1 }} />
-        Confirm the sale
+        <strong>Confirm the sale</strong>
       </Fab>
     </Box>
   );
