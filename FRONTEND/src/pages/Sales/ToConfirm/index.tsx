@@ -12,26 +12,77 @@ import Typography from "@mui/material/Typography";
 import { theme } from "../../../utils/theme";
 import { formatNumber } from "../../../utils/utils";
 import ToConfirmItem from "../ToConfirmItem";
-import CancelIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import SaveIcon from "@mui/icons-material/CheckOutlined";
+import { useAtom } from "jotai";
+import { cartAtom, SaleItem } from "../../../utils/atoms";
+import SentimentDissatisfied from "@mui/icons-material/SentimentDissatisfied";
+import ConfirmIcon from "@mui/icons-material/CheckOutlined";
+import { Fab } from "@mui/material";
+import IncrementNumber from "../../../components/IncrementNumber";
+import { SELL_STATUS } from "../../../utils/enum";
+import { SellType } from "../../../utils/types";
+import { SellService } from "../../../services/sell.service";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/routes";
+import { useApiError } from "../../../utils/api";
 
 const ToConfirm = () => {
-  const [openCancelModal, setOpenCancelModal] = useState(false);
-
-  const handleCloseCancelModal = () => {
-    setOpenCancelModal(false);
-  };
-  const handleOpenCancelModal = () => {
-    setOpenCancelModal(true);
-  };
-
+  const [cart, setCart] = useAtom(cartAtom);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const { handleApiError } = useApiError();
+
+  const navigate = useNavigate();
 
   const handleCloseConfirmModal = () => {
     setOpenConfirmModal(false);
   };
   const handleOpenConfirmModal = () => {
     setOpenConfirmModal(true);
+  };
+
+  const handleConfirmSale = async () => {
+    const vente: SellType = {
+      produits: cart.map((item) => ({
+        id: item.product.id,
+        quantite: item.quantity,
+        prixVente: item.sellingPrice || item.product.prix,
+      })),
+      commentaires: comment,
+      status: SELL_STATUS.VALIDATED,
+    };
+    try {
+      await SellService.createSell(vente);
+      navigate(ROUTES.SALES);
+      setCart([]);
+      setComment("");
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setOpenConfirmModal(false);
+    }
+  };
+
+  const getTotalPrice = (item: SaleItem): number => {
+    const sellingPrice = item.sellingPrice || item.product.prix;
+    return sellingPrice * item.quantity;
+  };
+
+  const handleQuantityChange = (productId: number, newQuantity: number) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId ? { ...item, quantity: newQuantity } : item,
+    );
+    setCart(updatedCart);
+  };
+
+  const handleSellingPriceChange = (productId: number, newPrice: number) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId
+        ? { ...item, sellingPrice: newPrice }
+        : item,
+    );
+    setCart(updatedCart);
   };
 
   return (
@@ -52,13 +103,27 @@ const ToConfirm = () => {
         />
       </Paper>
       <Box sx={{ marginTop: "25px" }}>
-        <ToConfirmItem
-          title="Samsung A14 4/128GB"
-          price={760000}
-          quantity={10}
-          onConfirm={handleOpenConfirmModal}
-          onCancel={handleOpenCancelModal}
-        />
+        {cart.length > 0 ? (
+          cart.map((item) => (
+            <ToConfirmItem key={item.product.id} item={item} />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            <SentimentDissatisfied
+              sx={{ fontSize: 60, color: theme.disabledColor }}
+            />
+            <Typography variant="subtitle1" color={theme.disabledColor}>
+              Empty cart, please buy something
+            </Typography>
+          </Box>
+        )}
       </Box>
       {/* confirm sell modal */}
       <MyModal
@@ -68,62 +133,85 @@ const ToConfirm = () => {
         title="Confirm this sale ?"
       >
         <DialogContent sx={{ textAlign: "center" }}>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            color={theme.blackPearl}
-          >
-            <strong>Samsung Galaxy A14 4/128GB</strong>
-          </Typography>
-          <br />
-          <Typography component="p" variant="body1" color={theme.blackPearl}>
-            prix d'origine : <strong>{formatNumber(760000)} Ar</strong>
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            marginY={2}
-          >
-            <Typography
-              component="span"
-              variant="body1"
-              color={theme.blackPearl}
+          {cart.map((item) => (
+            <Box
+              key={item.product.id}
               sx={{
-                marginRight: "5px",
+                marginBottom: 4,
+                padding: 2,
+                border: `2px solid ${theme.blackPearl}`,
+                borderRadius: "4px",
               }}
             >
-              quantity to confirm: <strong>4</strong>
-            </Typography>
-          </Box>
-          <Box marginX={5}>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Selling price"
-              type="number"
-              fullWidth
-              value={760000}
-              disabled
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Total price"
-              type="number"
-              fullWidth
-              value={760000 * 4}
-              disabled
-            />
-            <TextField
-              margin="dense"
-              label="Comment"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-            />
-          </Box>
+              <Typography
+                component="p"
+                variant="subtitle1"
+                color={theme.blackPearl}
+              >
+                <strong>{item.product.name}</strong>
+              </Typography>
+              <Typography
+                component="p"
+                variant="body1"
+                color={theme.blackPearl}
+              >
+                Original Price:{" "}
+                <strong>{formatNumber(item.product.prix)} Ar</strong>
+              </Typography>
+              <TextField
+                margin="dense"
+                label="Selling Price"
+                type="number"
+                fullWidth
+                value={item.sellingPrice || item.product.prix}
+                onChange={(e) =>
+                  handleSellingPriceChange(
+                    item.product.id,
+                    Number(e.target.value),
+                  )
+                }
+              />
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Typography
+                  component="p"
+                  variant="body1"
+                  color={theme.blackPearl}
+                >
+                  Quantity: <strong>{item.quantity}</strong>
+                </Typography>
+                {/* Add IncrementNumber component */}
+                <IncrementNumber
+                  initialValue={item.quantity}
+                  handleChangeNumber={(newQuantity) =>
+                    handleQuantityChange(item.product.id, newQuantity)
+                  }
+                />
+              </Box>
+              <Typography
+                component="p"
+                variant="body1"
+                color={theme.blackPearl}
+              >
+                Total Price:{" "}
+                <strong>{formatNumber(getTotalPrice(item))} Ar</strong>
+              </Typography>
+            </Box>
+          ))}
+          <TextField
+            margin="dense"
+            label="Comment"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
         </DialogContent>
         <DialogActions
           sx={{
@@ -136,7 +224,7 @@ const ToConfirm = () => {
             size="large"
             variant="contained"
             color="success"
-            onClick={handleCloseConfirmModal}
+            onClick={handleConfirmSale}
             startIcon={<SaveIcon />}
           >
             Confirm
@@ -151,97 +239,15 @@ const ToConfirm = () => {
           </Button>
         </DialogActions>
       </MyModal>
-      {/* cancel sell modal */}
-      <MyModal
-        open={openCancelModal}
-        onClose={handleCloseCancelModal}
-        fullscreen
-        title="Are you sure you want to cancel this sale ?"
+      <Fab
+        variant="extended"
+        color="primary"
+        onClick={handleOpenConfirmModal}
+        style={{ position: "fixed", bottom: 16, right: 16 }}
       >
-        <DialogContent sx={{ textAlign: "center" }}>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            color={theme.blackPearl}
-          >
-            <strong>Samsung Galaxy A14 4/128GB</strong>
-          </Typography>
-          <br />
-          <Typography component="p" variant="body1" color={theme.blackPearl}>
-            prix d'origine : <strong>{formatNumber(760000)} Ar</strong>
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            marginY={2}
-          >
-            <Typography
-              component="span"
-              variant="body1"
-              color={theme.blackPearl}
-              sx={{
-                marginRight: "5px",
-              }}
-            >
-              quantity to confirm: <strong>4</strong>
-            </Typography>
-          </Box>
-          <Box marginX={5}>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Selling price"
-              type="number"
-              fullWidth
-              value={760000}
-              disabled
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Total price"
-              type="number"
-              fullWidth
-              value={760000 * 4}
-              disabled
-            />
-            <TextField
-              margin="dense"
-              label="Comment"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            padding: "20px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            size="large"
-            variant="contained"
-            color="error"
-            onClick={handleCloseCancelModal}
-            startIcon={<CancelIcon />}
-          >
-            Cancel the sell
-          </Button>
-          <Button
-            size="large"
-            variant="text"
-            color="inherit"
-            onClick={handleCloseCancelModal}
-          >
-            Back
-          </Button>
-        </DialogActions>
-      </MyModal>
+        <ConfirmIcon sx={{ mr: 1 }} />
+        <strong>Confirm the sale</strong>
+      </Fab>
     </Box>
   );
 };

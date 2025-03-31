@@ -1,3 +1,5 @@
+import { ROLES, SELL_STATUS } from "./enum";
+
 export type SnackbarContextType = {
   handleSetSnackbar: (value: {
     isOpen: boolean;
@@ -14,8 +16,23 @@ export type SessionContextType = {
 };
 
 export type UserType = {
+  email: string;
+  role: ROLES;
+};
+
+export type ProductType = {
   id: number;
   name: string;
-  role: string;
-  isActive: boolean;
+  prix: number;
+  category: string;
+};
+
+export type SellType = {
+  produits: {
+    id: number;
+    quantite: number;
+    prixVente: number;
+  }[];
+  commentaires?: string;
+  status: SELL_STATUS;
 };

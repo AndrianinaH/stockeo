@@ -3,7 +3,7 @@ import { useSession } from "../../context/session.context";
 import AdminLayout from "../AdminLayout";
 import { Navigate, Outlet } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-import { ROLES } from "../../utils/roles";
+import { ROLES } from "../../utils/enum";
 
 const AdminRoute = () => {
   const { user, isLoading } = useSession();

@@ -8,9 +8,11 @@ import { useSession } from "../../../context/session.context";
 import ConnectionLayout from "../../../components/ConnectionLayout";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSnackbar } from "../../../context/snackbar.context";
 import { AuthService } from "../../../services/auth.service";
 import { setToken } from "../../../utils/utils";
+import { ROLES } from "../../../utils/enum";
+import { useApiError } from "../../../utils/api"; // Import the hook
+import { useSnackbar } from "../../../context/snackbar.context";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,31 +21,33 @@ const Login = () => {
   const { handleSetSnackbar } = useSnackbar();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { handleApiError } = useApiError();
 
   const handleSubmit = () => {
     setIsLoading(true);
-    AuthService.login({ email, password })
+    AuthService.login({ username: email, password })
       .then((result) => {
-        setUser(result?.data?.user);
-        setToken(result?.data?.accessToken);
-        localStorage.setItem("token", result?.data?.accessToken);
-        navigate(ROUTES.ROOT);
-        setIsLoading(false);
-        handleSetSnackbar({
-          isOpen: true,
-          message: "Welcome back!",
-          variant: "success",
-        });
-        return;
+        const data = result?.data;
+        if (data.user) {
+          setUser({
+            email: data.user,
+            role: ROLES.USER,
+          });
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          navigate(ROUTES.ROOT);
+          setIsLoading(false);
+          handleSetSnackbar({
+            isOpen: true,
+            message: "Welcome back!",
+            variant: "success",
+          });
+          return;
+        }
       })
       .catch((error) => {
-        console.log(error);
         setIsLoading(false);
-        handleSetSnackbar({
-          isOpen: true,
-          message: error?.response?.data || "An error encountered",
-          variant: "error",
-        });
+        handleApiError(error);
       });
   };
 

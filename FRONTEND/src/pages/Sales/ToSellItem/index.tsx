@@ -5,14 +5,36 @@ import { theme } from "../../../utils/theme";
 import { formatNumber } from "../../../utils/utils";
 import Button from "@mui/material/Button";
 import SellIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import { useAtom } from "jotai";
+import { cartAtom, SaleItem } from "../../../utils/atoms";
+import { ProductType } from "../../../utils/types";
 
 interface OneItemProps {
-  title: string;
-  quantity: number;
-  price: number;
-  onClick(): void;
+  product: ProductType; // Use product instead of title, price, quantity
 }
-const ToSellItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
+
+const ToSellItem: FC<OneItemProps> = ({ product }) => {
+  const [cart, setCart] = useAtom(cartAtom);
+
+  const handleAddToCard = () => {
+    // Vérifie si le produit est déjà dans le panier
+    const existingItem = cart.find((item) => item.product.id === product.id);
+
+    if (existingItem) {
+      // Si le produit existe déjà, augmente la quantité
+      const updatedCart = cart.map((item) =>
+        item.product.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      );
+      setCart(updatedCart);
+    } else {
+      // Si le produit n'existe pas, ajoute-le au panier avec une quantité de 1
+      const newSaleItem: SaleItem = { product: product, quantity: 1 };
+      setCart([...cart, newSaleItem]);
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -29,7 +51,7 @@ const ToSellItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
       boxShadow="0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"
     >
       <Typography component="h1" variant="h6" color={theme.blackPearl}>
-        {title}
+        {product.name}
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography
@@ -47,7 +69,7 @@ const ToSellItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
               borderRadius: "5px",
             }}
           >
-            {quantity}
+            {10} {/* Replace with actual quantity if available */}
           </strong>
         </Typography>
         <Typography component="p" color={theme.blackPearl}>
@@ -60,18 +82,18 @@ const ToSellItem: FC<OneItemProps> = ({ title, quantity, price, onClick }) => {
               borderRadius: "5px",
             }}
           >
-            {formatNumber(price)} Ar
+            {formatNumber(product.prix)} Ar
           </strong>
         </Typography>
       </Box>
       <Button
-        onClick={onClick}
+        onClick={handleAddToCard} // Use handleAddToCard
         sx={{ fontWeight: "bold !important" }}
         variant="contained"
         size="large"
         startIcon={<SellIcon fontSize="large" />}
       >
-        SELL
+        Add to cart {/* Change the text */}
       </Button>
     </Box>
   );
