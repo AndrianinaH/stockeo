@@ -137,9 +137,9 @@ const ToConfirm = () => {
             <Box
               key={item.product.id}
               sx={{
-                marginBottom: 2,
+                marginBottom: 4,
                 padding: 2,
-                border: `1px solid ${theme.mainBorderColor}`,
+                border: `2px solid ${theme.blackPearl}`,
                 borderRadius: "4px",
               }}
             >
