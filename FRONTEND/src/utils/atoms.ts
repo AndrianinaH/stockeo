@@ -1,9 +1,9 @@
 import { atom } from "jotai";
-import { Product } from "./types";
+import { ProductType } from "./types";
 
 // Définis le type pour un item dans la liste des ventes, incluant le produit et la quantité
 export type SaleItem = {
-  product: Product;
+  product: ProductType;
   quantity: number;
   sellingPrice?: number;
 };
