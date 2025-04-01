@@ -25,6 +25,7 @@ import { SellService } from "../../../services/sell.service";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/routes";
 import { useApiError } from "../../../utils/api";
+import { useSnackbar } from "../../../context/snackbar.context";
 
 const ToConfirm = () => {
   const [cart, setCart] = useAtom(cartAtom);
@@ -32,6 +33,7 @@ const ToConfirm = () => {
   const [comment, setComment] = useState("");
 
   const { handleApiError } = useApiError();
+  const { handleSetSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
 
@@ -52,11 +54,19 @@ const ToConfirm = () => {
       commentaires: comment,
       status: SELL_STATUS.VALIDATED,
     };
+    if (vente && vente.produits.length === 0) {
+      return;
+    }
     try {
       await SellService.createSell(vente);
       navigate(ROUTES.SALES);
       setCart([]);
       setComment("");
+      handleSetSnackbar({
+        isOpen: true,
+        message: "Sales confirmed successfully",
+        variant: "success",
+      });
     } catch (error) {
       handleApiError(error);
     } finally {
@@ -239,15 +249,17 @@ const ToConfirm = () => {
           </Button>
         </DialogActions>
       </MyModal>
-      <Fab
-        variant="extended"
-        color="primary"
-        onClick={handleOpenConfirmModal}
-        style={{ position: "fixed", bottom: 16, right: 16 }}
-      >
-        <ConfirmIcon sx={{ mr: 1 }} />
-        <strong>Confirm the sale</strong>
-      </Fab>
+      {cart && cart.length > 0 && (
+        <Fab
+          variant="extended"
+          color="primary"
+          onClick={handleOpenConfirmModal}
+          style={{ position: "fixed", bottom: 16, right: 16 }}
+        >
+          <ConfirmIcon sx={{ mr: 1 }} />
+          <strong>Confirm the sale</strong>
+        </Fab>
+      )}
     </Box>
   );
 };

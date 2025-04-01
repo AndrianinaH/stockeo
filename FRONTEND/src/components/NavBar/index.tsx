@@ -11,7 +11,6 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import MetricsIcon from "@mui/icons-material/BarChartOutlined";
 import StockIcon from "@mui/icons-material/StoreMallDirectoryOutlined";
 import SaleIcon from "@mui/icons-material/ShoppingBagOutlined";
 
@@ -97,7 +96,6 @@ const NavBar = () => {
       <Tabs value={selectedTab} onChange={handleChangeTab} variant="fullWidth">
         <Tab icon={<StockIcon />} label="Stock" />
         <Tab icon={<SaleIcon />} label="Sales" />
-        <Tab icon={<MetricsIcon />} label="Metrics" />
       </Tabs>
     </>
   );
